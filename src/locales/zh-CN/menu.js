@@ -3,6 +3,8 @@ export default {
   'menu.category': '类别',
   'menu.product': '产品',
   'menu.appraisal': '订单',
+  'menu.appraisal.detail': '订单',
+  'menu.detail': '订单',
   'menu.image': '图库',
   'menu.home': '首页',
   'menu.login': '登录',

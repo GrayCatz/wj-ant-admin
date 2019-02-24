@@ -57,6 +57,32 @@ export async function categoryRemove(params) {
 }
 
 
+export async function appraisalPaging(params) {
+  return request(
+    `http://127.0.0.1:2002/api/v1/appraisal/paging?name=${params.name ? params.name : ''}&page=${
+      params.page ? params.page : ''
+      }&size=${params.size ? params.size : ''}`,
+  );
+}
+
+export async function appraisalGet(params) {
+  return request(`http://127.0.0.1:2002/api/v1/appraisal/get?id=${params.id ? params.id : ''}`);
+}
+
+export async function appraisalAdd(params) {
+  let formData = new FormData();
+  formData.append('name', params.name ? params.name : '');
+  formData.append('remark', params.remark ? params.remark : '');
+  return request(`http://127.0.0.1:2002/api/v1/appraisal/add`, {
+    method: 'POST',
+    body: formData,
+  });
+}
+
+export async function appraisalRemove(params) {
+  console.info(params);
+  return request(`http://127.0.0.1:2002/api/v1/appraisal/remove?id=${params.id}`);
+}
 
 
 export async function queryProjectNotice() {
