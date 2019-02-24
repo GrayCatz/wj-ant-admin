@@ -1,7 +1,7 @@
 import { brandAdd, brandGet, brandPaging, brandRemove } from '@/services/api';
 
 export default {
-  namespace: 'rule',
+  namespace: 'brand',
 
   state: {
     data: {
@@ -14,8 +14,8 @@ export default {
     *fetch({ payload }, { call, put }) {
       const response = yield call(brandPaging, payload);
       console.log(response);
-      let resp = response.data;
-      let data = {
+      const resp = response.data;
+      const data = {
         list: resp.data,
         pagination: {
           current: resp.pageNo,

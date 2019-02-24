@@ -1,11 +1,16 @@
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Button, Card, Col, Dropdown, Form, Icon, Input, Menu, message, Modal, Row } from 'antd';
+import { Button, Card, Col, Dropdown, Form, Icon, Input, message, Modal, Row } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './TableList.less';
+
+const ADD = 'brand/add';
+const PAGING = 'brand/fetch';
+const REMOVE = 'brand/remove';
+const GET = 'brand/get';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -33,22 +38,22 @@ const CreateForm = Form.create()(props => {
     >
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="品牌名">
         {form.getFieldDecorator('name', {
-          rules: [{ required: true }],
-        })(<Input placeholder="请输入" />)}
+          rules: [{ required: true, message: '名称不能为空！' }],
+        })(<Input placeholder="请输入"/>)}
       </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="备注">
         {form.getFieldDecorator('remark', {
-          rules: [{ required: true }],
-        })(<TextArea rows={4} placeholder="请输入至少五个字符" />)}
+          // rules: [{ required: true  ,message: '！}],
+        })(<TextArea rows={4} placeholder="请输入至少五个字符"/>)}
       </FormItem>
     </Modal>
   );
 });
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ rule, loading }) => ({
-  rule,
-  loading: loading.models.rule,
+@connect(({ brand, loading }) => ({
+  brand,
+  loading: loading.models.brand,
 }))
 @Form.create()
 class TableList extends PureComponent {
@@ -88,11 +93,8 @@ class TableList extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    // dispatch({
-    //   type: 'rule/fetch',
-    // });
     dispatch({
-      type: 'rule/fetch',
+      type: PAGING,
       payload: {},
     });
     console.info('componentDidMount');
@@ -120,7 +122,7 @@ class TableList extends PureComponent {
     }
 
     dispatch({
-      type: 'rule/fetch',
+      type: PAGING,
       payload: params,
     });
   };
@@ -134,14 +136,14 @@ class TableList extends PureComponent {
   handleAdd = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/add',
+      type: ADD,
       payload: {
         name: fields.name,
         remark: fields.remark,
       },
       callback: () => {
         dispatch({
-          type: 'rule/fetch',
+          type: PAGING,
           payload: {},
         });
       },
@@ -162,13 +164,13 @@ class TableList extends PureComponent {
       cancelText: '取消',
       onOk: () => {
         dispatch({
-          type: 'rule/remove',
+          type: REMOVE,
           payload: {
             id: currentItem.id,
           },
           callback: () => {
             dispatch({
-              type: 'rule/fetch',
+              type: PAGING,
               payload: {},
             });
           },
@@ -196,7 +198,7 @@ class TableList extends PureComponent {
       });
 
       dispatch({
-        type: 'rule/fetch',
+        type: PAGING,
         payload: values,
       });
     });
@@ -210,7 +212,7 @@ class TableList extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'rule/fetch',
+      type: PAGING,
       payload: {},
     });
   };
@@ -236,7 +238,7 @@ class TableList extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="品牌名">
-              {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
             </FormItem>
           </Col>
 
@@ -257,16 +259,10 @@ class TableList extends PureComponent {
 
   render() {
     const {
-      rule: { data },
+      brand: { data },
       loading,
     } = this.props;
     const { selectedRows, modalVisible } = this.state;
-    const menu = (
-      <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
-        <Menu.Item key="remove">删除</Menu.Item>
-        <Menu.Item key="approval">批量审批</Menu.Item>
-      </Menu>
-    );
 
     const parentMethods = {
       handleAdd: this.handleAdd,
@@ -286,7 +282,7 @@ class TableList extends PureComponent {
                   <Button>批量操作</Button>
                   <Dropdown overlay={menu}>
                     <Button>
-                      更多操作 <Icon type="down" />
+                      更多操作 <Icon type="down"/>
                     </Button>
                   </Dropdown>
                 </span>
@@ -302,7 +298,7 @@ class TableList extends PureComponent {
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible} />
+        <CreateForm {...parentMethods} modalVisible={modalVisible}/>
       </PageHeaderWrapper>
     );
   }
