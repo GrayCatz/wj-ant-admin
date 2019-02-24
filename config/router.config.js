@@ -30,6 +30,30 @@ export default [
         component: './brand/BrandList',
       },
       {
+        path: '/category',
+        name: 'category',
+        icon: 'dashboard',
+        component: './category/CategoryList',
+      },
+      {
+        path: '/product',
+        name: 'product',
+        icon: 'dashboard',
+        component: './category/CategoryList',
+      },
+      {
+        path: '/appraisal',
+        name: 'appraisal',
+        icon: 'dashboard',
+        component: './category/CategoryList',
+      },
+      {
+        path: '/image',
+        name: 'image',
+        icon: 'dashboard',
+        component: './category/CategoryList',
+      },
+      {
         path: '/dashboard',
         name: 'dashboard',
         icon: 'dashboard',

@@ -5,18 +5,15 @@ export async function brandPaging(params) {
   return request(
     `http://127.0.0.1:2002/api/v1/brand/paging?name=${params.name ? params.name : ''}&page=${
       params.page ? params.page : ''
-    }&size=${params.size ? params.size : ''}`
+      }&size=${params.size ? params.size : ''}`,
   );
-  // return request(`/api/rule?${stringify(params)}`);
 }
 
 export async function brandGet(params) {
   return request('http://127.0.0.1:2002/api/v1/brand/get');
-  // return request(`/api/rule?${stringify(params)}`);
 }
 
 export async function brandAdd(params) {
-  // return request('http://127.0.0.1:2002/api/v1/brand/add');
   let formData = new FormData();
   formData.append('name', params.name ? params.name : '');
   formData.append('remark', params.remark ? params.remark : '');
@@ -24,15 +21,43 @@ export async function brandAdd(params) {
     method: 'POST',
     body: formData,
   });
-  // return request(`/api/rule?${stringify(params)}`);
 }
 
 export async function brandRemove(params) {
   console.info(params);
   return request(`http://127.0.0.1:2002/api/v1/brand/remove?id=${params.id}`);
-  // return request(`http://127.0.0.1:2002/api/v1/brand/remove`);
-  // return request(`/api/rule?${stringify(params)}`);
 }
+
+
+export async function categoryPaging(params) {
+  return request(
+    `http://127.0.0.1:2002/api/v1/category/paging?name=${params.name ? params.name : ''}&page=${
+      params.page ? params.page : ''
+      }&size=${params.size ? params.size : ''}`,
+  );
+}
+
+export async function categoryGet(params) {
+  return request('http://127.0.0.1:2002/api/v1/category/get');
+}
+
+export async function categoryAdd(params) {
+  let formData = new FormData();
+  formData.append('name', params.name ? params.name : '');
+  formData.append('remark', params.remark ? params.remark : '');
+  return request(`http://127.0.0.1:2002/api/v1/category/add`, {
+    method: 'POST',
+    body: formData,
+  });
+}
+
+export async function categoryRemove(params) {
+  console.info(params);
+  return request(`http://127.0.0.1:2002/api/v1/category/remove?id=${params.id}`);
+}
+
+
+
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');

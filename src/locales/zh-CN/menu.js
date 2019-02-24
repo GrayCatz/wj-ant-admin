@@ -1,5 +1,9 @@
 export default {
   'menu.brand': '品牌',
+  'menu.category': '类别',
+  'menu.product': '产品',
+  'menu.appraisal': '订单',
+  'menu.image': '图库',
   'menu.home': '首页',
   'menu.login': '登录',
   'menu.register': '注册',
