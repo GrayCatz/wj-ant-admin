@@ -24,6 +24,12 @@ export default [
       // dashboard
       { path: '/', redirect: '/dashboard/analysis' },
       {
+        path: '/brand',
+        name: 'brand',
+        icon: 'dashboard',
+        component: './brand/BrandList',
+      },
+      {
         path: '/dashboard',
         name: 'dashboard',
         icon: 'dashboard',

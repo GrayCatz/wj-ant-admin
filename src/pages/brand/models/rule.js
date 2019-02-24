@@ -1,4 +1,4 @@
-import { queryRule, removeRule, addRule, updateRule } from '@/services/api';
+import { brandAdd, brandGet, brandPaging, brandRemove } from '@/services/api';
 
 export default {
   namespace: 'rule',
@@ -12,20 +12,24 @@ export default {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryRule, payload);
+      const response = yield call(brandPaging, payload);
       console.log(response);
+      let resp = response.data;
       let data = {
-        list: [],
-        pagination: {},
+        list: resp.data,
+        pagination: {
+          current: resp.pageNo,
+          pageSize: resp.size,
+          total: resp.total,
+        },
       };
-      data.list = response.data.data;
       yield put({
         type: 'save',
         payload: data,
       });
     },
     *add({ payload, callback }, { call, put }) {
-      const response = yield call(addRule, payload);
+      const response = yield call(brandAdd, payload);
       yield put({
         type: 'save',
         payload: response,
@@ -33,7 +37,7 @@ export default {
       if (callback) callback();
     },
     *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeRule, payload);
+      const response = yield call(brandRemove, payload);
       yield put({
         type: 'save',
         payload: response,
@@ -41,7 +45,7 @@ export default {
       if (callback) callback();
     },
     *update({ payload, callback }, { call, put }) {
-      const response = yield call(updateRule, payload);
+      const response = yield call(brandRemove, payload);
       yield put({
         type: 'save',
         payload: response,

@@ -1,6 +1,39 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
 
+export async function brandPaging(params) {
+  return request(
+    `http://127.0.0.1:2002/api/v1/brand/paging?name=${params.name ? params.name : ''}&page=${
+      params.page ? params.page : ''
+    }&size=${params.size ? params.size : ''}`
+  );
+  // return request(`/api/rule?${stringify(params)}`);
+}
+
+export async function brandGet(params) {
+  return request('http://127.0.0.1:2002/api/v1/brand/get');
+  // return request(`/api/rule?${stringify(params)}`);
+}
+
+export async function brandAdd(params) {
+  // return request('http://127.0.0.1:2002/api/v1/brand/add');
+  let formData = new FormData();
+  formData.append('name', params.name ? params.name : '');
+  formData.append('remark', params.remark ? params.remark : '');
+  return request(`http://127.0.0.1:2002/api/v1/brand/add`, {
+    method: 'POST',
+    body: formData,
+  });
+  // return request(`/api/rule?${stringify(params)}`);
+}
+
+export async function brandRemove(params) {
+  console.info(params);
+  return request(`http://127.0.0.1:2002/api/v1/brand/remove?id=${params.id}`);
+  // return request(`http://127.0.0.1:2002/api/v1/brand/remove`);
+  // return request(`/api/rule?${stringify(params)}`);
+}
+
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }
@@ -10,7 +43,8 @@ export async function queryActivities() {
 }
 
 export async function queryRule(params) {
-  return request(`/api/rule?${stringify(params)}`);
+  return request('http://127.0.0.1:2002/api/v1/brand/paging');
+  // return request(`/api/rule?${stringify(params)}`);
 }
 
 export async function removeRule(params) {

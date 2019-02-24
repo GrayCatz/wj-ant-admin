@@ -1,4 +1,5 @@
 export default {
+  'menu.brand': '品牌',
   'menu.home': '首页',
   'menu.login': '登录',
   'menu.register': '注册',
