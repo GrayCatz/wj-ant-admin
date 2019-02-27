@@ -85,6 +85,35 @@ export async function appraisalRemove(params) {
 }
 
 
+export async function imagePaging(params) {
+  return request(
+    `http://127.0.0.1:2002/api/v1/image/paging?name=${params.name ? params.name : ''}&page=${
+      params.page ? params.page : ''
+      }&size=${params.size ? params.size : ''}`,
+  );
+}
+
+export async function imageGet(params) {
+  return request(`http://127.0.0.1:2002/api/v1/image/get?id=${params.id ? params.id : ''}`);
+}
+
+export async function imageAdd(params) {
+  let formData = new FormData();
+  formData.append('name', params.name ? params.name : '');
+  formData.append('type', params.type ? params.type : '');
+  formData.append('url', params.url ? params.url : '');
+  return request(`http://127.0.0.1:2002/api/v1/image/add`, {
+    method: 'POST',
+    body: formData,
+  });
+}
+
+export async function imageRemove(params) {
+  console.info(params);
+  return request(`http://127.0.0.1:2002/api/v1/image/remove?id=${params.id}`);
+}
+
+
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }

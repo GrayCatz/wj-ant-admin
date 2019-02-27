@@ -27,7 +27,7 @@ export default [
         path: '/image',
         name: 'image',
         icon: 'dashboard',
-        component: './category/CategoryList',
+        component: './image/ImageList.js',
       },
       {
         path: '/category',
