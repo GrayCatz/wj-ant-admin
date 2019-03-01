@@ -4,8 +4,7 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import { Button, Card, Col, Dropdown, Form, Icon, Input, List, message, Modal, Row, Select, Upload } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import Ellipsis from '../../components/Ellipsis';
-import styles from './Projects.less';
+import styles from './TableList.less';
 
 
 let imgUrl;
@@ -473,12 +472,17 @@ class TableList extends PureComponent {
                 <List.Item>
                   <Card
                     className={styles.card}
+                    bodyStyle={{ padding: '5px', textAlign: 'center', height: '30px' }}
                     hoverable
-                    cover={<img alt={item.name} src={item.url} style={{ height: '180px' }}/>}
+                    cover={<a href={item.url} target="blank" style={{ width: '100%' }}><img alt={item.name}
+                                                                                            src={item.url} style={{
+                      height: '180px',
+                      width: '100%',
+                    }}/></a>}
                   >
                     <Card.Meta
-                      title={<a>{item.name}</a>}
-                      description={<Ellipsis lines={2}>{item.type}</Ellipsis>}
+                      style={{}}
+                      title={<span> {item.name}</span>}
                     />
                   </Card>
                 </List.Item>
