@@ -4,7 +4,7 @@ import { Button, Card, Divider, Icon, List } from 'antd';
 import DescriptionList from '@/components/DescriptionList';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './BasicProfile.less';
-import ImageSelector from './ImageSelector';
+import ImageSelector from '../image/ImageSelector';
 
 const { Description } = DescriptionList;
 

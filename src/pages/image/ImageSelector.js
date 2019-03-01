@@ -2,7 +2,8 @@ import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
 import { Button, Card, Col, Dropdown, Form, Icon, Input, List, message, Modal, Row } from 'antd';
-import styles from './TableList.less';
+import styles from '../product/TableList.less';
+import ImageList from './ImageList';
 
 
 let imgUrl;
@@ -210,58 +211,12 @@ class ImageSelector extends PureComponent {
         title="选择图片"
         centered
         bodyStyle={{ height: '600px', overflow: 'auto' }}
-        width="800px"
+        width="1000px"
         visible={modalVisible}
         onOk={() => handleModalVisible(false)}
         onCancel={() => handleModalVisible(false)}
       >
-
-        <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary">
-                新建
-              </Button>
-              {selectedRows.length > 0 && (
-                <span>
-                  <Button>批量操作</Button>
-                  <Dropdown overlay={menu}>
-                    <Button>
-                      更多操作 <Icon type="down"/>
-                    </Button>
-                  </Dropdown>
-                </span>
-              )}
-            </div>
-            <List
-              rowKey="id"
-              loading={loading}
-              grid={{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }}
-              dataSource={data.list}
-              renderItem={item => (
-                <List.Item>
-                  <Card
-                    className={styles.card}
-                    bodyStyle={{ padding: '5px', textAlign: 'center', height: '30px' }}
-                    hoverable
-                    cover={<a href={item.url} target="blank" style={{ width: '100%' }}><img alt={item.name}
-                                                                                            src={item.url} style={{
-                      height: '180px',
-                      width: '100%',
-                    }}/></a>}
-                  >
-                    <Card.Meta
-                      style={{}}
-                      title={<span> {item.name}</span>}
-                    />
-                  </Card>
-                </List.Item>
-
-              )}
-            />
-          </div>
-        </Card>
+        <ImageList/>
       </Modal>
     );
   }
