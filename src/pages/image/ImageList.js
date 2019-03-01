@@ -2,7 +2,8 @@ import React, { Fragment, PureComponent } from 'react';
 import OSS from 'ali-oss';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Button, Card, Col, Dropdown, Form, Icon, Input, List, message, Modal, Row, Select, Upload } from 'antd';
+import { Button, Card, Col, Dropdown, Form, Icon, Input, List, message, Modal, Row, Select } from 'antd';
+import AvatarUpload from './AvatarUpload';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './TableList.less';
 
@@ -13,7 +14,6 @@ let imgFile;
 
 // 实例化OSS Client,具体的参数可参文档配置项
 const client = new OSS({
-  // region: 'http://oss-cn-shenzhen.aliyuncs.com',
   region: 'oss-cn-shenzhen',
   accessKeyId: 'LTAIavN8qvYKCn7A',
   accessKeySecret: 'RTzP3aP5QSV0SqL9TMKlwWVp0wNP5G',
@@ -35,100 +35,6 @@ async function put(file, callback) {
   }
 }
 
-
-// const uploadProps = {
-//   // action: '/upload.do',
-//   multiple: false,
-//   data: { a: 1, b: 2 },
-//   // headers: {
-//   //   Authorization: '$prefix $token',
-//   // },
-//   onStart(file) {
-//     console.log('onStart', file, file.name);
-//     imgFile = file;
-//   },
-//   onSuccess(ret, file) {
-//     console.log('onSuccess', ret, file.name);
-//     // https://mz-dev-2.oss-cn-shenzhen.aliyuncs.com/u%3D3377302992%2C3361149372%26fm%3D26%26gp%3D0.jpg
-//   },
-//   onError(err) {
-//     console.log('onError', err);
-//   },
-//   onProgress({ percent }, file) {
-//     console.log('onProgress', `${percent}%`, file.name);
-//   },
-//   customRequest({
-//                   action,
-//                   data,
-//                   file,
-//                   filename,
-//                   headers,
-//                   onError,
-//                   onProgress,
-//                   onSuccess,
-//                   withCredentials,
-//                 }) {
-//
-//
-//     return {
-//       abort() {
-//         console.log('upload progress is aborted.');
-//       },
-//     };
-//   },
-// };
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
-
-class Avatar extends React.Component {
-  state = {
-    loading: false,
-  };
-
-
-  handleChange = (info) => {
-    if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => this.setState({
-        imageUrl,
-        loading: false,
-      }));
-      imgFile = info.file.originFileObj;
-    }
-  };
-
-  render() {
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'}/>
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
-    const imageUrl = this.state.imageUrl;
-    return (
-      <Upload
-        name="avatar"
-        listType="picture-card"
-        className="avatar-uploader"
-        showUploadList={false}
-        // action="//jsonplaceholder.typicode.com/posts/"
-        // beforeUpload={beforeUpload}
-        onChange={this.handleChange}
-      >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '150px', height: '150px' }}/> : uploadButton}
-      </Upload>
-    );
-  }
-}
-
-
 const ADD = 'image/add';
 const PAGING = 'image/fetch';
 const REMOVE = 'image/remove';
@@ -140,7 +46,9 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-
+let setImgFile = (file) => {
+  imgFile = file;
+};
 const CreateForm = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
   const okHandle = () => {
@@ -165,7 +73,7 @@ const CreateForm = Form.create()(props => {
         })(<Input placeholder="请输入"/>)}
       </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="图片类型">
-        {form.getFieldDecorator('approver2', {
+        {form.getFieldDecorator('type', {
           rules: [{ required: true, message: '请选择图片类型' }],
         })(
           <Select
@@ -180,7 +88,7 @@ const CreateForm = Form.create()(props => {
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="上传图片">
         {form.getFieldDecorator('image', {
           // rules: [{ required: true  ,message: '！}],
-        })(<Avatar/>)}
+        })(<AvatarUpload setImgFile={setImgFile}/>)}
       </FormItem>
     </Modal>
   );
@@ -276,7 +184,7 @@ class TableList extends PureComponent {
         type: ADD,
         payload: {
           name: fields.name,
-          remark: fields.remark,
+          type: fields.type,
           url: url,
         },
         callback: () => {
@@ -353,12 +261,6 @@ class TableList extends PureComponent {
     dispatch({
       type: PAGING,
       payload: {},
-    });
-  };
-
-  handleSelectRows = rows => {
-    this.setState({
-      selectedRows: rows,
     });
   };
 
