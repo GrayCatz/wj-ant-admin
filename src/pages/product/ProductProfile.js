@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button, Card, Divider, Icon, List } from 'antd';
+import { Button, Card, Divider } from 'antd';
 import DescriptionList from '@/components/DescriptionList';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './BasicProfile.less';
 import ImageSelector from '../image/ImageSelector';
+import ProductImageList from './ProductImageList';
 
 const { Description } = DescriptionList;
 
@@ -22,7 +23,6 @@ class ProductProfile extends Component {
     const { dispatch, match } = this.props;
     const { params } = match;
 
-    console.log(params);
     dispatch({
       type: 'profile/fetchBasic',
       payload: {
@@ -32,7 +32,6 @@ class ProductProfile extends Component {
   }
 
   setModal2Visible = (modalVisible) => {
-    console.log('ssdd:', this);
     this.setState({ modalVisible });
   };
 
@@ -69,32 +68,7 @@ class ProductProfile extends Component {
           <Divider style={{ marginBottom: 32 }}/>
 
           <div className={styles.title}>必填</div>
-
-          <List
-            grid={{ gutter: 16, column: 4 }}
-            dataSource={data}
-            renderItem={item => (
-              <List.Item
-                style={{ border: '1px solid #ccc', textAlign: 'center', padding: '20px', position: 'relative' }}>
-                <div>
-                  <span>管体正面</span>
-                  <div style={{ cursor: 'pointer', position: 'absolute', right: 15, top: 10 }}><Icon type="close"/>
-                  </div>
-                </div>
-                <Card hoverable
-                      bodyStyle={{ padding: 0 }}
-                      style={{ width: '90%', margin: '5%' }}
-                      cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                                  style={{ height: '180px' }}/>}/>
-                <Card hoverable
-                      bodyStyle={{ padding: 0 }}
-                      style={{ width: '90%', margin: '5%' }}
-                      cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                                  style={{ height: '180px' }}/>}/>
-              </List.Item>
-            )}
-          />
-
+          <ProductImageList dataSource={data}/>
         </Card>
 
         <Button type="primary" onClick={() => this.setModal2Visible(true)}>Vertically centered modal dialog</Button>

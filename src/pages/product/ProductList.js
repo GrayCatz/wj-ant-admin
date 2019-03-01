@@ -165,7 +165,6 @@ class TableList extends PureComponent {
 
   // 删除
   handleDelete = (key, currentItem) => {
-    console.log(currentItem);
     const { dispatch } = this.props;
     Modal.confirm({
       title: '删除项目',

@@ -124,7 +124,6 @@ class TableList extends PureComponent {
 
   // 删除
   handleDelete = (key, currentItem) => {
-    console.log(currentItem);
     const { dispatch } = this.props;
     Modal.confirm({
       title: '删除项目',
@@ -232,7 +231,6 @@ class TableList extends PureComponent {
 
   render() {
 
-    console.log('props:', this.props);
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,

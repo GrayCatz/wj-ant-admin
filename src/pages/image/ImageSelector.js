@@ -103,7 +103,6 @@ class ImageSelector extends PureComponent {
 
   // 删除
   handleDelete = (key, currentItem) => {
-    console.log(currentItem);
     const { dispatch } = this.props;
     Modal.confirm({
       title: '删除项目',
@@ -195,8 +194,6 @@ class ImageSelector extends PureComponent {
   }
 
   render() {
-
-    console.log('props:', this.props);
 
     const { modalVisible, handleModalVisible } = this.props;
     const {
