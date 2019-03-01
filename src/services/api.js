@@ -28,6 +28,33 @@ export async function brandRemove(params) {
   return request(`http://127.0.0.1:2002/api/v1/brand/remove?id=${params.id}`);
 }
 
+export async function productPaging(params) {
+  return request(
+    `http://127.0.0.1:2002/api/v1/product/paging?name=${params.name ? params.name : ''}&page=${
+      params.page ? params.page : ''
+      }&size=${params.size ? params.size : ''}`,
+  );
+}
+
+export async function productGet(params) {
+  return request(`http://127.0.0.1:2002/api/v1/product/get?id=${params.id ? params.id : ''}`);
+}
+
+export async function productAdd(params) {
+  let formData = new FormData();
+  formData.append('name', params.name ? params.name : '');
+  formData.append('remark', params.remark ? params.remark : '');
+  return request(`http://127.0.0.1:2002/api/v1/product/add`, {
+    method: 'POST',
+    body: formData,
+  });
+}
+
+export async function productRemove(params) {
+  console.info(params);
+  return request(`http://127.0.0.1:2002/api/v1/product/remove?id=${params.id}`);
+}
+
 
 export async function categoryPaging(params) {
   return request(

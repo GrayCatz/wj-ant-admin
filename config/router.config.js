@@ -45,7 +45,13 @@ export default [
         path: '/product',
         name: 'product',
         icon: 'dashboard',
-        component: './category/CategoryList',
+        component: './product/ProductList',
+      },
+      {
+        path: '/product/detail/:id',
+        name: 'detail',
+        icon: 'profile',
+        component: './product/ProductProfile.js',
       },
       // {
       //   path: '/appraisal',
@@ -70,7 +76,7 @@ export default [
       {
         path: '/appraisal/detail/:id',
         name: 'detail',
-        icon: 'dashboard',
+        icon: 'profile',
         component: './appraisal/BasicProfile.js',
       },
       // {
