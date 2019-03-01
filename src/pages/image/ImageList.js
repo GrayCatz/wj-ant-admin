@@ -1,10 +1,11 @@
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Button, Card, Col, Dropdown, Form, Icon, Input, List, message, Modal, Row } from 'antd';
+import { Button, Card, Col, Dropdown, Form, Icon, Input, List, message, Modal, Row, Select } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './TableList.less';
 import CreateForm from './CreateForm';
+
 const FormItem = Form.Item;
 
 const ADD = 'image/add';
@@ -200,11 +201,20 @@ class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="品牌名">
+            <FormItem label="图片名称">
               {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
             </FormItem>
           </Col>
-
+          <Col md={8} sm={24}>
+            <FormItem label="图片类型">
+              {getFieldDecorator('type')(
+                <Select placeholder="请选择" style={{ width: '100%' }}>
+                  <Select.Option value="0">鉴别图</Select.Option>
+                  <Select.Option value="1">鉴别示例图</Select.Option>
+                </Select>,
+              )}
+            </FormItem>
+          </Col>
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">

@@ -1,7 +1,7 @@
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Button, Card, Col, Dropdown, Form, Icon, Input, List, message, Modal, Row } from 'antd';
+import { Button, Col, Form, Input, message, Modal, Row } from 'antd';
 import styles from '../product/TableList.less';
 import ImageList from './ImageList';
 
@@ -198,7 +198,7 @@ class ImageSelector extends PureComponent {
 
     console.log('props:', this.props);
 
-    const { modalVisible,handleModalVisible } = this.props;
+    const { modalVisible, handleModalVisible } = this.props;
     const {
       image: { data },
       loading,

@@ -114,7 +114,7 @@ export async function appraisalRemove(params) {
 
 export async function imagePaging(params) {
   return request(
-    `http://127.0.0.1:2002/api/v1/image/paging?name=${params.name ? params.name : ''}&page=${
+    `http://127.0.0.1:2002/api/v1/image/paging?name=${params.name ? params.name : ''}&type=${params.type ? params.type : ''}&page=${
       params.page ? params.page : ''
       }&size=${params.size ? params.size : ''}`,
   );
