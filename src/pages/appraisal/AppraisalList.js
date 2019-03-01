@@ -290,14 +290,14 @@ class TableList extends PureComponent {
       handleModalVisible: this.handleModalVisible,
     };
     return (
-      <PageHeaderWrapper title="查询表格">
+      <PageHeaderWrapper title="订单管理">
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
+              {/*<Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>*/}
+                {/*新建*/}
+              {/*</Button>*/}
               {selectedRows.length > 0 && (
                 <span>
                   <Button>批量操作</Button>

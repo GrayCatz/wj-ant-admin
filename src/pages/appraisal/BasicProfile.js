@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Badge, Card, Divider, Table } from 'antd';
+import { Badge, Card, Divider, Table,List } from 'antd';
 import DescriptionList from '@/components/DescriptionList';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './BasicProfile.less';
@@ -147,6 +147,21 @@ class BasicProfile extends Component {
         },
       },
     ];
+
+    const data = [
+      {
+        title: 'Title 1',
+      },
+      {
+        title: 'Title 2',
+      },
+      {
+        title: 'Title 3',
+      },
+      {
+        title: 'Title 4',
+      },
+    ];
     return (
       <PageHeaderWrapper title="基础详情页" loading={loading}>
         <Card bordered={false}>
@@ -164,17 +179,29 @@ class BasicProfile extends Component {
           </DescriptionList>
           <Divider style={{ marginBottom: 32 }}/>
 
-          <div className={styles.title}>退货商品</div>
-          <Table
-            style={{ marginBottom: 24 }}
-            pagination={false}
-            loading={loading}
-            dataSource={goodsData}
-            columns={goodsColumns}
-            rowKey="id"
+          <div className={styles.title}>鉴别图必填</div>
+          {/*<Table*/}
+            {/*style={{ marginBottom: 24 }}*/}
+            {/*pagination={false}*/}
+            {/*loading={loading}*/}
+            {/*dataSource={goodsData}*/}
+            {/*columns={goodsColumns}*/}
+            {/*rowKey="id"*/}
+          {/*/>*/}
+
+          <List
+            grid={{ gutter: 16, column: 4 }}
+            dataSource={data}
+            renderItem={item => (
+              <List.Item>
+                <Card hoverable
+                      bodyStyle={{padding:0}}
+                      style={{ width: "80%" }}
+                      cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" style={{height:"180px"}}/>}/>
+
+              </List.Item>
+            )}
           />
-
-
           {/*<div className={styles.title}>退货进度</div>*/}
           {/*<Table*/}
             {/*style={{ marginBottom: 16 }}*/}
