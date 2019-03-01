@@ -16,7 +16,6 @@ const { Description } = DescriptionList;
 class ProductProfile extends Component {
 
   state = {
-    modalVisible: false,
   };
 
   componentDidMount() {
@@ -31,9 +30,7 @@ class ProductProfile extends Component {
     });
   }
 
-  setModal2Visible = (modalVisible) => {
-    this.setState({ modalVisible });
-  };
+
 
   render() {
     const { profile = {}, loading } = this.props;
@@ -71,9 +68,6 @@ class ProductProfile extends Component {
           <ProductImageList dataSource={data}/>
         </Card>
 
-        <Button type="primary" onClick={() => this.setModal2Visible(true)}>Vertically centered modal dialog</Button>
-
-        <ImageSelector modalVisible={this.state.modalVisible} handleModalVisible={this.setModal2Visible}/>
       </PageHeaderWrapper>
     );
   }

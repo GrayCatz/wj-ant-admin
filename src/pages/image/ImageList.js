@@ -306,11 +306,15 @@ class TableList extends PureComponent {
                     className={styles.card}
                     bodyStyle={{ padding: '5px', textAlign: 'center', height: '30px' }}
                     hoverable
-                    cover={<a href={item.url} target="blank" style={{ width: '100%' }}><img alt={item.name}
-                                                                                            src={item.url} style={{
+                    // cover={<a href={item.url} target="blank" style={{ width: '100%' }} onClick={()=>{this.props.handleSelectImage(item)}}><img alt={item.name}
+                    //                                                                         src={item.url} style={{
+                    //   height: '180px',
+                    //   width: '100%',
+                    // }}/></a>}
+                    cover={<img alt={item.name} src={item.url} style={{
                       height: '180px',
                       width: '100%',
-                    }}/></a>}
+                    }} onClick={() => {this.props.handleSelectImage(item);}}/>}
                   >
                     <Card.Meta
                       style={{}}

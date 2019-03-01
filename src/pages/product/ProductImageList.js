@@ -1,53 +1,105 @@
 import React, { Component } from 'react';
 import { Card, Icon, List } from 'antd';
-import DescriptionList from '@/components/DescriptionList';
+import ImageSelector from '../image/ImageSelector';
 
 class ProductImageList extends Component {
 
-  state = {};
+  state = {
+    modalVisible: false,
+    curItem: null,
+    data: [
+      {
+        name: '管体正面',
+        a: {
+          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        },
+        b: {
+          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        },
+      },
+      {
+        name: '管体正面',
+        a: {
+          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        },
+        b: {
+          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        },
+      },
+      {
+        name: '管体正面',
+        a: {
+          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        },
+        b: {
+          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        },
+      },
+      {
+        name: '管体正面',
+        a: {
+          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        },
+        b: {
+          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+        },
+      },
+    ],
+  };
 
-  componentDidMount() {
-  }
+  // handleSelector = (file) => {
+  //   console.log("handleSelector")
+  // };
+  handleModalVisible1 = (modalVisible, item) => {
+    this.setState({ modalVisible });
+    this.state.curItem = item;
+  };
+
+  handleModalVisible = (modalVisible) => {
+    this.setState({ modalVisible });
+  };
+
+  handleSelectImage = (item) => {
+    console.log(item);
+    this.handleModalVisible(false);
+    this.state.curItem.url = item.url;
+  };
 
   render() {
     const { profile = {}, loading } = this.props;
-    const data = [
-      {
-        title: 'Title 1',
-      },
-      {
-        title: 'Title 2',
-      },
-      {
-        title: 'Title 3',
-      },
-      {
-        title: 'Title 4',
-      },
-    ];
+
     return (
       <List
         grid={{ gutter: 16, column: 4 }}
-        dataSource={data}
+        dataSource={this.state.data}
         renderItem={item => (
-          <List.Item
-            style={{ border: '1px solid #ccc', textAlign: 'center', padding: '20px', position: 'relative' }}>
-            <div>
-              <span>管体正面</span>
-              <div style={{ cursor: 'pointer', position: 'absolute', right: 15, top: 10 }}><Icon type="close"/>
+          <div>
+            <List.Item
+              style={{ border: '1px solid #ccc', textAlign: 'center', padding: '20px', position: 'relative' }}>
+              <div>
+                <span>{item.name}</span>
+                <div style={{ cursor: 'pointer', position: 'absolute', right: 15, top: 10 }}><Icon type="close"/>
+                </div>
               </div>
-            </div>
-            <Card hoverable
-                  bodyStyle={{ padding: 0 }}
-                  style={{ width: '90%', margin: '5%' }}
-                  cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                              style={{ height: '180px' }}/>}/>
-            <Card hoverable
-                  bodyStyle={{ padding: 0 }}
-                  style={{ width: '90%', margin: '5%' }}
-                  cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                              style={{ height: '180px' }}/>}/>
-          </List.Item>
+              <Card hoverable
+                    bodyStyle={{ padding: 0 }}
+                    style={{ width: '90%', margin: '5%' }}
+                    cover={<img alt="example" src={item.a.url}
+                                style={{ height: '180px' }} onClick={() => {
+                      this.handleModalVisible1(true, item.a);
+                    }}/>}/>
+              <Card hoverable
+                    bodyStyle={{ padding: 0 }}
+                    style={{ width: '90%', margin: '5%' }}
+                    cover={<img alt="example" src={item.b.url}
+                                style={{ height: '180px' }} onClick={() => {
+                      this.handleModalVisible1(true, item.b);
+                    }}/>}/>
+            </List.Item>
+            <ImageSelector modalVisible={this.state.modalVisible} handleModalVisible={this.handleModalVisible}
+                           handleSelectImage={this.handleSelectImage}/>
+          </div>
+
         )}
       />
 
