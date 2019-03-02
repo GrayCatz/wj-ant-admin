@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button, Card, Divider, Form, Input, message, Select } from 'antd';
+import { Button, Card, Divider, Empty, Form, Input, message, Select } from 'antd';
 import DescriptionList from '@/components/DescriptionList';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import ProductImageList from './ProductImageList';
 import { List } from 'antd/lib/list';
 import ImageSelector from '../image/ImageSelector';
+import router from 'umi/router';
 
 const { Description } = DescriptionList;
 
@@ -19,7 +20,7 @@ const FormItem = Form.Item;
 class ProductProfile extends Component {
 
   state = {
-    enable: false,
+    // enable: false,
     modalVisible: false,
   };
 
@@ -27,6 +28,7 @@ class ProductProfile extends Component {
     const { dispatch, match } = this.props;
     const { params } = match;
 
+    if (params.id == 0) return;
     dispatch({
       type: 'profile/fetchBasic',
       payload: {
@@ -71,29 +73,35 @@ class ProductProfile extends Component {
         payload: {
           ...fieldsValue,
           img: application.img,
-          status: this.state.enable?"ENABLE":application.status,
+          // status: this.state.enable ? 'ENABLE' : application.status,
           remove: application.remove,
           required: application.required,
           optional: application.optional,
         },
-        callback: (bSuccess) => {
+        callback: (response) => {
           console.log('callback');
-          message.success(bSuccess ? '保存成功' : '保存失败');
-          const { dispatch, match } = this.props;
-          const { params } = match;
-          dispatch({
-            type: 'profile/fetchBasic',
-            payload: {
-              id: params.id || '1000000000',
-            },
-          });
+          if (response.code==1) {
+            message.success('保存成功');
+            router.push(`/product/detail/${response.data}`);
+            // const { dispatch, match } = this.props;
+            // const { params } = match;
+            // dispatch({
+            //   type: 'profile/fetchBasic',
+            //   payload: {
+            //     id: response.data,
+            //   },
+            // });
+          } else {
+            message.error(response.msg);
+          }
+
         },
       });
     });
   };
 
   handleDelete = (item) => {
-    console.log("handleDelete")
+    console.log('handleDelete');
     if (item.id == 0) return;
     let remove = this.props.profile.application.remove;
     if (!remove) {
@@ -103,8 +111,8 @@ class ProductProfile extends Component {
     this.props.profile.application.remove = remove;
   };
 
-  handleSave(e,enable){
-    console.log( this.props.form);
+  handleSave(e, enable) {
+    console.log(this.props.form);
     this.state.enable = enable;
     // this.props.form.submit(e,()=>{});
   }
@@ -125,12 +133,16 @@ class ProductProfile extends Component {
     const {
       form: { getFieldDecorator },
     } = this.props;
-    const { profile = {}, loading } = this.props;
-    const { basicGoods = [], basicProgress = [], userInfo = {}, application = {} } = profile;
+    let { profile = {}, loading } = this.props;
+    let { basicGoods = [], basicProgress = [], userInfo = {}, application = {} } = profile;
+    this.props.profile.application = application && application != null ? application : {};
+    if (!application || application == null) {
+      application = {};
+    }
     const fields = this.state.fields;
     // const data = [
     //   {
-    //     title: 'Title 1',
+    //     title: 'Title 1',s
     //   },
     //   {
     //     title: 'Title 2',
@@ -151,38 +163,42 @@ class ProductProfile extends Component {
               <Description term="" style={{ display: 'none' }}>
                 <FormItem label="">
                   {getFieldDecorator('id', {
-                    initialValue: application.id,
+                    initialValue: application == null ? '' : application.id,
                   })(<Input placeholder="请输入"/>)}
                 </FormItem>
               </Description>
               <Description term="">
                 <FormItem label="产品名">
                   {getFieldDecorator('name', {
-                    initialValue: application.name,
+                    required: true,
+                    initialValue: application == null ? '' : application.name,
                   })(<Input placeholder="请输入"/>)}
                 </FormItem>
               </Description>
               <Description term="">
                 <FormItem label="品牌">
                   {getFieldDecorator('brand', {
-                    initialValue: application.brand,
+                    required: true,
+                    initialValue: application == null ? '' : application.brand,
                   })(<Input placeholder="请输入"/>)}
                 </FormItem>
               </Description>
               <Description term="">
                 <FormItem label="类别">
                   {getFieldDecorator('category', {
-                    initialValue: application.category,
+                    required: true,
+                    initialValue: application == null ? '' : application.category,
                   })(<Input placeholder="请输入"/>)}
                 </FormItem>
               </Description>
               <Description term="">
                 <Form.Item label="状态">
                   {getFieldDecorator('status', {
-                    initialValue: application.status,
+                    initialValue: application != null && application.status ? application.status : '',
                     rules: [{ required: true, message: '请输入状态' }],
                   })(
                     <Select>
+                      <Select.Option value="">请选择</Select.Option>
                       <Select.Option value="ENABLE">启用</Select.Option>
                       <Select.Option value="DISABLE">禁用</Select.Option>
                     </Select>,
@@ -196,7 +212,9 @@ class ProductProfile extends Component {
                 <Card hoverable
                       bodyStyle={{ padding: 0 }}
                       style={{ width: '90%', margin: '5%' }}
-                      cover={<img alt="example" src={application.img}
+                      cover={application.img == null ? <Empty onClick={() => {
+                        this.handleModalVisible(true);
+                      }}/> : <img alt="example" src={application.img}
                                   style={{ height: '180px' }} onClick={() => {
                         this.handleModalVisible(true);
                       }}/>}/>
@@ -207,12 +225,12 @@ class ProductProfile extends Component {
             <ProductImageList dataSource={application.required} handleSelectImage={this.handleSelectImage}
                               handleCurItemChange={this.handleCurItemChange} handleDelete={this.handleDelete}
                               type='REQUIRED'/>
-
             <ProductImageList dataSource={application.optional} handleSelectImage={this.handleSelectImage}
-                              handleCurItemChange={this.handleCurItemChange} type='OPTIONAL'/>
+                              handleCurItemChange={this.handleCurItemChange} handleDelete={this.handleDelete}
+                              type='OPTIONAL'/>
             <div>
               <Button type="primary" htmlType="submit">保存</Button>
-              <Button type="primary" htmlType="submit" onClick={(e)=>this.handleSave(e,true)}>保存并立刻启用</Button>
+              {/*<Button type="primary" htmlType="submit" onClick={(e) => this.handleSave(e, true)}>保存并立刻启用</Button>*/}
             </div>
           </Card>
         </Form>

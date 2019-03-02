@@ -238,6 +238,10 @@ class TableList extends PureComponent {
     });
   };
 
+  handleAddNew = flag => {
+    router.push(`/product/detail/0`);
+  };
+
   renderForm() {
     const {
       form: { getFieldDecorator },
@@ -292,7 +296,7 @@ class TableList extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
+              <Button icon="plus" type="primary" onClick={() => this.handleAddNew()}>
                 新建
               </Button>
               {selectedRows.length > 0 && (

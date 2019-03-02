@@ -28,7 +28,7 @@ export default {
         type: 'show',
         payload: response,
       });
-      if (callback) callback(response.code==1);
+      if (callback) callback(response);
     },
     * fetchAdvanced(_, { call, put }) {
       const response = yield call(productGet);

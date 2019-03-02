@@ -52,7 +52,7 @@ export async function productAdd(params) {
 
 export async function productUpdate(params = {}) {
   console.log(JSON.stringify(params));
-  return request(`http://127.0.0.1:2002/api/v1/product/update`, {
+  return request(`http://127.0.0.1:2002/api/v1/product/save`, {
     method: 'POST',
     body: params,
   });
