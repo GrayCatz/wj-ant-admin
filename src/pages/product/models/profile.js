@@ -20,13 +20,15 @@ export default {
         },
       });
     },
-    * saveProfile({ payload }, { call, put }) {
+    * saveProfile({ payload , callback }, { call, put }) {
       console.log(payload)
+      console.log(callback)
       const response = yield call(productUpdate, payload);
       yield put({
         type: 'show',
         payload: response,
       });
+      if (callback) callback(response.code==1);
     },
     * fetchAdvanced(_, { call, put }) {
       const response = yield call(productGet);

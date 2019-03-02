@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Button, Card, Divider, Form, Input, Select } from 'antd';
+import { Button, Card, Divider, Form, Input, message, Select } from 'antd';
 import DescriptionList from '@/components/DescriptionList';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './BasicProfile.less';
 import ProductImageList from './ProductImageList';
+import { List } from 'antd/lib/list';
+import ImageSelector from '../image/ImageSelector';
 
 const { Description } = DescriptionList;
 
@@ -18,7 +20,7 @@ const FormItem = Form.Item;
 class ProductProfile extends Component {
 
   state = {
-    curItem:null
+    modalVisible: false,
   };
 
   componentDidMount() {
@@ -33,60 +35,53 @@ class ProductProfile extends Component {
     });
   }
 
+  handleModalVisible = (modalVisible) => {
+    this.setState({ modalVisible });
+  };
+
 
   handleCurItemChange = (item) => {
     console.log(item);
-    this.state.curItem = item;
+    // this.state.curItem = item;
   };
 
   handleSelectImage = (item) => {
     console.log(item);
-    this.state.curItem.url = item.url;
+    this.props.profile.application.img = item.url;
+    this.handleModalVisible(false)
   };
 
   // 查询
   handleSearch = e => {
     e.preventDefault();
 
-    const { dispatch, form,profile } = this.props;
+    const { dispatch, form, profile } = this.props;
     const { application = {} } = profile;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       console.log('fieldsValue:', fieldsValue);
-      //
-      // const values = {
-      //   ...fieldsValue,
-      //   updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
-      // };
-      //
-      // this.setState({
-      //   formValues: values,
-      // });
-      //
-      // dispatch({
-      //   type: PAGING,
-      //   payload: values,
-      // });
-      console.log(application)
+      console.log(application);
       dispatch({
         type: 'profile/saveProfile',
         payload: {
           ...fieldsValue,
+          img: application.img,
           required: application.required,
           optional: application.optional,
         },
+        callback: (bSuccess) => {
+          console.log('callback');
+          message.success(bSuccess ? '保存成功' : '保存失败');
+          const { dispatch, match } = this.props;
+          const { params } = match;
+          dispatch({
+            type: 'profile/fetchBasic',
+            payload: {
+              id: params.id || '1000000000',
+            },
+          });
+        },
       });
-
-    });
-  };
-
-  handleSave = () => {
-    const { dispatch, match, application } = this.props;
-    const { params } = match;
-    console.log(this.props.profile.application);
-    dispatch({
-      type: 'profile/saveProfile',
-      payload: this.props.profile.application,
     });
   };
 
@@ -173,21 +168,32 @@ class ProductProfile extends Component {
             </DescriptionList>
             <Divider style={{ marginBottom: 32 }}/>
             <DescriptionList size="large" title="产品示例图" style={{ marginBottom: 32 }}>
-              <Description term="品牌">{application.brand}</Description>
+              <Description term="">
+                <Card hoverable
+                      bodyStyle={{ padding: 0 }}
+                      style={{ width: '90%', margin: '5%' }}
+                      cover={<img alt="example" src={application.img}
+                                  style={{ height: '180px' }} onClick={() => {
+                        this.handleModalVisible(true);
+                      }}/>}/>
+              </Description>
             </DescriptionList>
             <Divider style={{ marginBottom: 32 }}/>
 
             <div className={styles.title}>必填</div>
-            <ProductImageList dataSource={application.required} handleSelectImage={this.handleSelectImage} handleCurItemChange={this.handleCurItemChange}/>
+            <ProductImageList dataSource={application.required} handleSelectImage={this.handleSelectImage}
+                              handleCurItemChange={this.handleCurItemChange}/>
             <div className={styles.title}>选填</div>
-            <ProductImageList dataSource={application.optional} handleSelectImage={this.handleSelectImage} handleCurItemChange={this.handleCurItemChange}/>
+            <ProductImageList dataSource={application.optional} handleSelectImage={this.handleSelectImage}
+                              handleCurItemChange={this.handleCurItemChange}/>
             <div>
               <Button type="primary" htmlType="submit">保存</Button>
               <Button type="primary">保存并立刻启用</Button>
             </div>
           </Card>
         </Form>
-
+        <ImageSelector modalVisible={this.state.modalVisible} handleModalVisible={this.handleModalVisible}
+                       handleSelectImage={this.handleSelectImage}/>
       </PageHeaderWrapper>
     );
   }
