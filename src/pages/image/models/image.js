@@ -1,4 +1,4 @@
-import { imageAdd, imageGet, imagePaging, imageRemove } from '@/services/api';
+import { imageAdd, imageBatchAdd, imageGet, imagePaging, imageRemove } from '@/services/api';
 
 export default {
   namespace: 'image',
@@ -30,6 +30,16 @@ export default {
     },
     * add({ payload, callback }, { call, put }) {
       const response = yield call(imageAdd, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      if (callback) callback();
+    },
+    * batchAdd({ payload, callback }, { call, put }) {
+      console.log("batchAdd")
+      console.log(payload)
+      const response = yield call(imageBatchAdd, payload);
       yield put({
         type: 'save',
         payload: response,

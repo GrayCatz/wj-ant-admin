@@ -151,6 +151,13 @@ export async function imageAdd(params) {
   });
 }
 
+export async function imageBatchAdd(params = {}) {
+  console.log(JSON.stringify(params));
+  return request(`http://127.0.0.1:2002/api/v1/image/batch_add`, {
+    method: 'POST',
+    body: params,
+  });
+}
 export async function imageRemove(params) {
   console.info(params);
   return request(`http://127.0.0.1:2002/api/v1/image/remove?id=${params.id}`);

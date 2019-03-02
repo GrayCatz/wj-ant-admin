@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import OSS from 'ali-oss';
-import { Button, Form, Icon, Modal, Upload } from 'antd';
+import { Form, Modal } from 'antd';
 import BatchUpload from './BatchUpload';
 
 const FormItem = Form.Item;
@@ -21,15 +21,37 @@ async function put(file, callback) {
   try {
     // object表示上传到OSS的名字，可自己定义
     // file浏览器中需要上传的文件，支持HTML5 file 和 Blob类型
+    console.log('sdfsdf: %j', client);
     let r1 = await client.put(file.name, file);
     console.log('put success: %j', r1);
     let r2 = await client.get(file.name);
     console.log('get success: %j', r2);
-    callback(r1.url);
+    callback(file, r1.url);
+    console.info("单个上传完成：",r1)
   } catch (e) {
     console.error('error: %j', e);
   }
 }
+
+async function putBatch(fileList, callback) {
+  let req = {
+    images: [],
+  };
+  // console.log('fileList:');
+  // console.log(fileList);
+  for (const index in fileList) {
+    console.info("单个上传：",index)
+    await put(fileList[index], (file, url) => {
+      req.images.push({
+        name: file.name,
+        url: url,
+      });
+    });
+  }
+  console.info("批量上传结束")
+  if(callback)callback(req);
+  return req;
+};
 
 
 @Form.create()
@@ -44,12 +66,14 @@ class BatchImport extends PureComponent {
     imgFile.push(file);
   };
   // 添加
+
   handleBatchAdd = (fields) => {
-    console.log("handleBatchAdd:")
-    console.log(imgFile)
-    // put(imgFile, (url) => {
-    //   this.props.handleAddSuccess(fields, url);
-    // });
+    // console.log('handleBatchAdd:');
+    // console.log(imgFile);
+    let req =  putBatch(imgFile, (req) => {
+      // this.props.handleAddSuccess(fields, url);
+      this.props.handleBatchAddSuccess(req);
+    });
   };
 
 

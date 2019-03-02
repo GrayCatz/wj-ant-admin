@@ -10,6 +10,7 @@ import BatchImport from './BatchImport';
 const FormItem = Form.Item;
 
 const ADD = 'image/add';
+const BATCH_ADD = 'image/batchAdd';
 const PAGING = 'image/fetch';
 const REMOVE = 'image/remove';
 const GET = 'image/get';
@@ -106,7 +107,7 @@ class TableList extends PureComponent {
   handleAddSuccess = (fields, url) => {
     const { dispatch } = this.props;
     dispatch({
-      type: ADD,
+      type: BATCH_ADD,
       payload: {
         name: fields.name,
         type: fields.type,
@@ -119,9 +120,26 @@ class TableList extends PureComponent {
         });
       },
     });
-
     message.success('添加成功');
     this.handleModalVisible();
+  };
+
+  // 添加
+  handleBatchAddSuccess = (req) => {
+    console.log("handleBatchAddSuccess")
+    const { dispatch } = this.props;
+    dispatch({
+      type: BATCH_ADD,
+      payload: req,
+      callback: () => {
+        message.success('导入成功');
+        this.handleBatchImportVisible(false);
+        dispatch({
+          type: PAGING,
+          payload: {},
+        });
+      },
+    });
   };
 
   // 删除
@@ -285,6 +303,7 @@ class TableList extends PureComponent {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
       handleAddSuccess: this.handleAddSuccess,
+      handleBatchAddSuccess: this.handleBatchAddSuccess,
     };
     let card = (
       <div>
