@@ -204,7 +204,7 @@ export default class GlobalHeaderRight extends PureComponent {
                 src={currentUser.avatar}
                 alt="avatar"
               />
-              <span className={styles.name}>{currentUser.name}</span>
+              <span className={styles.name}>{window.localStorage.username}</span>
             </span>
           </HeaderDropdown>
         ) : (

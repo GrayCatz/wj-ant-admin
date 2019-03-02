@@ -1,9 +1,10 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
+import { login, getFakeCaptcha} from '@/services/api';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
+import router from 'umi/router';
 
 export default {
   namespace: 'login',
@@ -14,30 +15,39 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
+      const response = yield call(login, payload);
+
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.code === '1') {
         reloadAuthorized();
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params;
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            window.location.href = redirect;
-            return;
-          }
-        }
-        yield put(routerRedux.replace(redirect || '/'));
+        console.log("登陆成功")
+        router.push(`/image`);
+        // global.token = response.data.token
+        window.localStorage.token = response.data.token;
+        window.localStorage.username = response.data.username;
+        yield put({
+          type: 'changeLoginStatus',
+          payload: response,
+        });
+        // window.location.href = "/image";
+        // const urlParams = new URL(window.location.href);
+        // const params = getPageQuery();
+        // let { redirect } = params;
+        // if (redirect) {
+        //   const redirectUrlParams = new URL(redirect);
+        //   if (redirectUrlParams.origin === urlParams.origin) {
+        //     redirect = redirect.substr(urlParams.origin.length);
+        //     if (redirect.match(/^\/.*#/)) {
+        //       redirect = redirect.substr(redirect.indexOf('#') + 1);
+        //     }
+        //   } else {
+        //     window.location.href = redirect;
+        //     return;
+        //   }
+        // }
+        // yield put(routerRedux.replace(redirect || '/'));
+      }else{
+
       }
     },
 
@@ -54,6 +64,8 @@ export default {
         },
       });
       reloadAuthorized();
+      global.token = ""
+      console.log("退出登录")
       yield put(
         routerRedux.push({
           pathname: '/user/login',

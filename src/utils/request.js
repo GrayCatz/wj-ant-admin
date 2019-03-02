@@ -1,6 +1,5 @@
 import fetch from 'dva/fetch';
 import { notification } from 'antd';
-import router from 'umi/router';
 import hash from 'hash.js';
 import { isAntdPro } from './utils';
 
@@ -93,7 +92,7 @@ export default function request(url, option) {
         'Content-Type': 'application/json; charset=utf-8',
         ...newOptions.headers,
       };
-      newOptions.method =  'POST';
+      newOptions.method = 'POST';
       newOptions.body = JSON.stringify(newOptions.body);
     } else {
       // newOptions.body is FormData
@@ -103,7 +102,12 @@ export default function request(url, option) {
       };
     }
   }
-
+  newOptions.headers = {
+    // token :token,
+    // token :"b567bc440d8745fea30ac97f444a8ddd",
+    token:window.localStorage.token,
+    ...newOptions.headers,
+  };
   const expirys = options.expirys && 60;
   // options.expirys !== false, return the cache,
   if (options.expirys !== false) {
@@ -119,7 +123,7 @@ export default function request(url, option) {
       sessionStorage.removeItem(`${hashcode}:timestamp`);
     }
   }
-  return fetch(url, newOptions)
+  let resp = fetch(url, newOptions)
     .then(checkStatus)
     .then(response => cachedSave(response, hashcode))
     .then(response => {
@@ -129,7 +133,25 @@ export default function request(url, option) {
         return response.text();
       }
       return response.json();
-    })
+    }).then(
+      response => {
+        console.log('reponse:', response);
+        if (url.indexOf('/api/v1') != -1 && response.code !== '1') {
+          notification.error({
+            message: `请求错误 `,
+            // message: `请求错误 ${response.status}: ${response.url}`,
+            description: response.msg,
+          });
+        }
+        if (url.indexOf('/api/v1') != -1 && response.code == '1000') {
+          window.g_app._store.dispatch({
+            type: 'login/logout',
+          });
+        }
+        return response;
+
+      },
+    )
     .catch(e => {
       const status = e.name;
       if (status === 401) {
@@ -153,4 +175,7 @@ export default function request(url, option) {
       //   router.push('/exception/404');
       // }
     });
+  // console.log('response:', resp);
+
+  return resp;
 }

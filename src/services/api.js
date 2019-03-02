@@ -1,5 +1,15 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
+import md5 from 'md5';
+
+export async function login(params) {
+  return request(
+    `http://127.0.0.1:2002/api/v1/token/add?username=${params.username ? params.username : ''}&password=${
+      params.password ? md5(params.password) : ''
+      }`
+  );
+
+}
 
 export async function brandPaging(params) {
   return request(
@@ -158,6 +168,7 @@ export async function imageBatchAdd(params = {}) {
     body: params,
   });
 }
+
 export async function imageRemove(params) {
   console.info(params);
   return request(`http://127.0.0.1:2002/api/v1/image/remove?id=${params.id}`);
