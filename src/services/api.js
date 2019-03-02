@@ -50,6 +50,22 @@ export async function productAdd(params) {
   });
 }
 
+export async function productUpdate(params = {}) {
+  console.log(JSON.stringify(params));
+  return request(`http://127.0.0.1:2002/api/v1/product/update`, {
+    method: 'POST',
+    body: params,
+  });
+  // return request(`http://127.0.0.1:2002/api/v1/product/update?data=`+JSON.stringify(params),);
+  // fetch('http://127.0.0.1:2002/api/v1/product/update', {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   method: 'POST',
+  //   body: JSON.stringify(params),
+  // });
+}
+
 export async function productRemove(params) {
   console.info(params);
   return request(`http://127.0.0.1:2002/api/v1/product/remove?id=${params.id}`);

@@ -93,6 +93,7 @@ export default function request(url, option) {
         'Content-Type': 'application/json; charset=utf-8',
         ...newOptions.headers,
       };
+      newOptions.method =  'POST';
       newOptions.body = JSON.stringify(newOptions.body);
     } else {
       // newOptions.body is FormData

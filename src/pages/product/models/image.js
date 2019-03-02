@@ -13,7 +13,6 @@ export default {
   effects: {
     * fetch({ payload }, { call, put }) {
       const response = yield call(imagePaging, payload);
-      console.log(response);
       const resp = response.data;
       const data = {
         list: resp.data,

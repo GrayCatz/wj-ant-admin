@@ -7,44 +7,44 @@ class ProductImageList extends Component {
   state = {
     modalVisible: false,
     curItem: null,
-    data: [
-      {
-        name: '管体正面',
-        a: {
-          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-        },
-        b: {
-          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-        },
-      },
-      {
-        name: '管体正面',
-        a: {
-          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-        },
-        b: {
-          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-        },
-      },
-      {
-        name: '管体正面',
-        a: {
-          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-        },
-        b: {
-          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-        },
-      },
-      {
-        name: '管体正面',
-        a: {
-          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-        },
-        b: {
-          url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-        },
-      },
-    ],
+    // data: [
+    //   {
+    //     name: '管体正面',
+    //     a: {
+    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+    //     },
+    //     b: {
+    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+    //     },
+    //   },
+    //   {
+    //     name: '管体正面',
+    //     a: {
+    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+    //     },
+    //     b: {
+    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+    //     },
+    //   },
+    //   {
+    //     name: '管体正面',
+    //     a: {
+    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+    //     },
+    //     b: {
+    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+    //     },
+    //   },
+    //   {
+    //     name: '管体正面',
+    //     a: {
+    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+    //     },
+    //     b: {
+    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+    //     },
+    //   },
+    // ],
   };
 
   // handleSelector = (file) => {
@@ -66,12 +66,12 @@ class ProductImageList extends Component {
   };
 
   render() {
-    const { profile = {}, loading } = this.props;
+    const { profile = {}, loading,dataSource } = this.props;
 
     return (
       <List
         grid={{ gutter: 16, column: 4 }}
-        dataSource={this.state.data}
+        dataSource={dataSource}
         renderItem={item => (
           <div>
             <List.Item
@@ -84,16 +84,16 @@ class ProductImageList extends Component {
               <Card hoverable
                     bodyStyle={{ padding: 0 }}
                     style={{ width: '90%', margin: '5%' }}
-                    cover={<img alt="example" src={item.a.url}
+                    cover={<img alt="example" src={item.example.url}
                                 style={{ height: '180px' }} onClick={() => {
-                      this.handleModalVisible1(true, item.a);
+                      this.handleModalVisible1(true, item.example);
                     }}/>}/>
               <Card hoverable
                     bodyStyle={{ padding: 0 }}
                     style={{ width: '90%', margin: '5%' }}
-                    cover={<img alt="example" src={item.b.url}
+                    cover={<img alt="example" src={item.realExample.url}
                                 style={{ height: '180px' }} onClick={() => {
-                      this.handleModalVisible1(true, item.b);
+                      this.handleModalVisible1(true, item.realExample);
                     }}/>}/>
             </List.Item>
             <ImageSelector modalVisible={this.state.modalVisible} handleModalVisible={this.handleModalVisible}

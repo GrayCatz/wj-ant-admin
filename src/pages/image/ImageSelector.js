@@ -68,7 +68,6 @@ class ImageSelector extends PureComponent {
       type: PAGING,
       payload: {},
     });
-    console.info('componentDidMount');
   }
 
 

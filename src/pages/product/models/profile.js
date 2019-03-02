@@ -1,4 +1,4 @@
-import { productGet } from '@/services/api';
+import { productGet, productUpdate } from '@/services/api';
 
 export default {
   namespace: 'profile',
@@ -18,6 +18,14 @@ export default {
         payload: {
           application: response.data,
         },
+      });
+    },
+    * saveProfile({ payload }, { call, put }) {
+      console.log(payload)
+      const response = yield call(productUpdate, payload);
+      yield put({
+        type: 'show',
+        payload: response,
       });
     },
     * fetchAdvanced(_, { call, put }) {
