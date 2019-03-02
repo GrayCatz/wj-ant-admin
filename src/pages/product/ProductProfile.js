@@ -17,7 +17,9 @@ const FormItem = Form.Item;
 @Form.create()
 class ProductProfile extends Component {
 
-  state = {};
+  state = {
+    curItem:null
+  };
 
   componentDidMount() {
     const { dispatch, match } = this.props;
@@ -30,6 +32,17 @@ class ProductProfile extends Component {
       },
     });
   }
+
+
+  handleCurItemChange = (item) => {
+    console.log(item);
+    this.state.curItem = item;
+  };
+
+  handleSelectImage = (item) => {
+    console.log(item);
+    this.state.curItem.url = item.url;
+  };
 
   // 查询
   handleSearch = e => {
@@ -165,9 +178,9 @@ class ProductProfile extends Component {
             <Divider style={{ marginBottom: 32 }}/>
 
             <div className={styles.title}>必填</div>
-            <ProductImageList dataSource={application.required}/>
+            <ProductImageList dataSource={application.required} handleSelectImage={this.handleSelectImage} handleCurItemChange={this.handleCurItemChange}/>
             <div className={styles.title}>选填</div>
-            <ProductImageList dataSource={application.optional}/>
+            <ProductImageList dataSource={application.optional} handleSelectImage={this.handleSelectImage} handleCurItemChange={this.handleCurItemChange}/>
             <div>
               <Button type="primary" htmlType="submit">保存</Button>
               <Button type="primary">保存并立刻启用</Button>

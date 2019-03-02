@@ -7,44 +7,7 @@ class ProductImageList extends Component {
   state = {
     modalVisible: false,
     curItem: null,
-    // data: [
-    //   {
-    //     name: '管体正面',
-    //     a: {
-    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //     },
-    //     b: {
-    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //     },
-    //   },
-    //   {
-    //     name: '管体正面',
-    //     a: {
-    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //     },
-    //     b: {
-    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //     },
-    //   },
-    //   {
-    //     name: '管体正面',
-    //     a: {
-    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //     },
-    //     b: {
-    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //     },
-    //   },
-    //   {
-    //     name: '管体正面',
-    //     a: {
-    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //     },
-    //     b: {
-    //       url: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //     },
-    //   },
-    // ],
+
   };
 
   // handleSelector = (file) => {
@@ -52,7 +15,8 @@ class ProductImageList extends Component {
   // };
   handleModalVisible1 = (modalVisible, item) => {
     this.setState({ modalVisible });
-    this.state.curItem = item;
+    // this.state.curItem = item;
+    this.props.handleCurItemChange(item);
   };
 
   handleModalVisible = (modalVisible) => {
@@ -62,7 +26,8 @@ class ProductImageList extends Component {
   handleSelectImage = (item) => {
     console.log(item);
     this.handleModalVisible(false);
-    this.state.curItem.url = item.url;
+    // this.state.curItem.url = item.url;
+    this.props.handleSelectImage(item);
   };
 
   render() {
