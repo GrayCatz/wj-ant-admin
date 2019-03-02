@@ -1,4 +1,4 @@
-import { appraisalGet } from '@/services/api';
+import { appraisalGet,appraisalResultChange } from '@/services/api';
 
 export default {
   namespace: 'profile',
@@ -19,6 +19,10 @@ export default {
           application:response.data,
         }
       });
+    },
+    * changeResult({ payload,callback }, { call, put }) {
+      const response = yield call(appraisalResultChange, payload);
+      if(callback)callback();
     },
     * fetchAdvanced(_, { call, put }) {
       const response = yield call(appraisalGet);

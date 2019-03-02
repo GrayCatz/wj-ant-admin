@@ -4,7 +4,7 @@ import md5 from 'md5';
 
 export async function login(params) {
   return request(
-    `http://127.0.0.1:2002/api/v1/token/add?username=${params.username ? params.username : ''}&password=${
+    `http://127.0.0.1:2003/api/v1/token/add?username=${params.username ? params.username : ''}&password=${
       params.password ? md5(params.password) : ''
       }`
   );
@@ -13,7 +13,7 @@ export async function login(params) {
 
 export async function brandPaging(params) {
   return request(
-    `http://127.0.0.1:2002/api/v1/brand/paging?name=${params.name ? params.name : ''}&page=${
+    `http://127.0.0.1:2003/api/v1/brand/paging?name=${params.name ? params.name : ''}&page=${
       params.page ? params.page : ''
       }&size=${params.size ? params.size : ''}`,
   );
@@ -27,7 +27,7 @@ export async function brandAdd(params) {
   let formData = new FormData();
   formData.append('name', params.name ? params.name : '');
   formData.append('remark', params.remark ? params.remark : '');
-  return request(`http://127.0.0.1:2002/api/v1/brand/add`, {
+  return request(`http://127.0.0.1:2003/api/v1/brand/add`, {
     method: 'POST',
     body: formData,
   });
@@ -35,26 +35,26 @@ export async function brandAdd(params) {
 
 export async function brandRemove(params) {
   console.info(params);
-  return request(`http://127.0.0.1:2002/api/v1/brand/remove?id=${params.id}`);
+  return request(`http://127.0.0.1:2003/api/v1/brand/remove?id=${params.id}`);
 }
 
 export async function productPaging(params) {
   return request(
-    `http://127.0.0.1:2002/api/v1/product/paging?name=${params.name ? params.name : ''}&page=${
+    `http://127.0.0.1:2003/api/v1/product/paging?name=${params.name ? params.name : ''}&page=${
       params.page ? params.page : ''
       }&size=${params.size ? params.size : ''}`,
   );
 }
 
 export async function productGet(params) {
-  return request(`http://127.0.0.1:2002/api/v1/product/get?id=${params.id ? params.id : ''}`);
+  return request(`http://127.0.0.1:2003/api/v1/product/get?id=${params.id ? params.id : ''}`);
 }
 
 export async function productAdd(params) {
   let formData = new FormData();
   formData.append('name', params.name ? params.name : '');
   formData.append('remark', params.remark ? params.remark : '');
-  return request(`http://127.0.0.1:2002/api/v1/product/add`, {
+  return request(`http://127.0.0.1:2003/api/v1/product/add`, {
     method: 'POST',
     body: formData,
   });
@@ -62,7 +62,7 @@ export async function productAdd(params) {
 
 export async function productUpdate(params = {}) {
   console.log(JSON.stringify(params));
-  return request(`http://127.0.0.1:2002/api/v1/product/save`, {
+  return request(`http://127.0.0.1:2003/api/v1/product/save`, {
     method: 'POST',
     body: params,
   });
@@ -78,27 +78,27 @@ export async function productUpdate(params = {}) {
 
 export async function productRemove(params) {
   console.info(params);
-  return request(`http://127.0.0.1:2002/api/v1/product/remove?id=${params.id}`);
+  return request(`http://127.0.0.1:2003/api/v1/product/remove?id=${params.id}`);
 }
 
 
 export async function categoryPaging(params) {
   return request(
-    `http://127.0.0.1:2002/api/v1/category/paging?name=${params.name ? params.name : ''}&page=${
+    `http://127.0.0.1:2003/api/v1/category/paging?name=${params.name ? params.name : ''}&page=${
       params.page ? params.page : ''
       }&size=${params.size ? params.size : ''}`,
   );
 }
 
 export async function categoryGet(params) {
-  return request('http://127.0.0.1:2002/api/v1/category/get');
+  return request('http://127.0.0.1:2003/api/v1/category/get');
 }
 
 export async function categoryAdd(params) {
   let formData = new FormData();
   formData.append('name', params.name ? params.name : '');
   formData.append('remark', params.remark ? params.remark : '');
-  return request(`http://127.0.0.1:2002/api/v1/category/add`, {
+  return request(`http://127.0.0.1:2003/api/v1/category/add`, {
     method: 'POST',
     body: formData,
   });
@@ -106,27 +106,31 @@ export async function categoryAdd(params) {
 
 export async function categoryRemove(params) {
   console.info(params);
-  return request(`http://127.0.0.1:2002/api/v1/category/remove?id=${params.id}`);
+  return request(`http://127.0.0.1:2003/api/v1/category/remove?id=${params.id}`);
 }
 
 
 export async function appraisalPaging(params) {
   return request(
-    `http://127.0.0.1:2002/api/v1/appraisal/paging?name=${params.name ? params.name : ''}&page=${
+    `http://127.0.0.1:2003/api/v1/appraisal/paging?name=${params.name ? params.name : ''}&page=${
       params.page ? params.page : ''
       }&size=${params.size ? params.size : ''}`,
   );
 }
 
 export async function appraisalGet(params) {
-  return request(`http://127.0.0.1:2002/api/v1/appraisal/get?id=${params.id ? params.id : ''}`);
+  return request(`http://127.0.0.1:2003/api/v1/appraisal/get?id=${params.id ? params.id : ''}`);
+}
+
+export async function appraisalResultChange(params) {
+  return request(`http://127.0.0.1:2003/api/v1/appraisal_result/update?id=${params.id ? params.id : ''}&result=${params.result ? params.result : ''}`);
 }
 
 export async function appraisalAdd(params) {
   let formData = new FormData();
   formData.append('name', params.name ? params.name : '');
   formData.append('remark', params.remark ? params.remark : '');
-  return request(`http://127.0.0.1:2002/api/v1/appraisal/add`, {
+  return request(`http://127.0.0.1:2003/api/v1/appraisal/add`, {
     method: 'POST',
     body: formData,
   });
@@ -134,20 +138,20 @@ export async function appraisalAdd(params) {
 
 export async function appraisalRemove(params) {
   console.info(params);
-  return request(`http://127.0.0.1:2002/api/v1/appraisal/remove?id=${params.id}`);
+  return request(`http://127.0.0.1:2003/api/v1/appraisal/remove?id=${params.id}`);
 }
 
 
 export async function imagePaging(params) {
   return request(
-    `http://127.0.0.1:2002/api/v1/image/paging?name=${params.name ? params.name : ''}&type=${params.type ? params.type : ''}&page=${
+    `http://127.0.0.1:2003/api/v1/image/paging?name=${params.name ? params.name : ''}&type=${params.type ? params.type : ''}&page=${
       params.page ? params.page : ''
       }&size=${params.size ? params.size : ''}`,
   );
 }
 
 export async function imageGet(params) {
-  return request(`http://127.0.0.1:2002/api/v1/image/get?id=${params.id ? params.id : ''}`);
+  return request(`http://127.0.0.1:2003/api/v1/image/get?id=${params.id ? params.id : ''}`);
 }
 
 export async function imageAdd(params) {
@@ -155,7 +159,7 @@ export async function imageAdd(params) {
   formData.append('name', params.name ? params.name : '');
   formData.append('type', params.type ? params.type : '');
   formData.append('url', params.url ? params.url : '');
-  return request(`http://127.0.0.1:2002/api/v1/image/add`, {
+  return request(`http://127.0.0.1:2003/api/v1/image/add`, {
     method: 'POST',
     body: formData,
   });
@@ -163,7 +167,7 @@ export async function imageAdd(params) {
 
 export async function imageBatchAdd(params = {}) {
   console.log(JSON.stringify(params));
-  return request(`http://127.0.0.1:2002/api/v1/image/batch_add`, {
+  return request(`http://127.0.0.1:2003/api/v1/image/batch_add`, {
     method: 'POST',
     body: params,
   });
@@ -171,7 +175,7 @@ export async function imageBatchAdd(params = {}) {
 
 export async function imageRemove(params) {
   console.info(params);
-  return request(`http://127.0.0.1:2002/api/v1/image/remove?id=${params.id}`);
+  return request(`http://127.0.0.1:2003/api/v1/image/remove?id=${params.id}`);
 }
 
 

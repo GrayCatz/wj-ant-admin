@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Badge, Card, Divider, Table,List } from 'antd';
+import { Badge, Button, Card, Col, Divider, List, Row } from 'antd';
 import DescriptionList from '@/components/DescriptionList';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import styles from './BasicProfile.less';
 
 const { Description } = DescriptionList;
 
@@ -50,11 +49,30 @@ class BasicProfile extends Component {
     const { dispatch, match } = this.props;
     const { params } = match;
 
-    console.log(params)
+    console.log(params);
     dispatch({
       type: 'profile/fetchBasic',
       payload: {
         id: params.id || '1000000000',
+      },
+    });
+  }
+
+  handleResult(id, result) {
+    const { dispatch, match } = this.props;
+    dispatch({
+      type: 'profile/changeResult',
+      payload: {
+        id: id,
+        result: result,
+      },
+      callback: () => {
+        dispatch({
+          type: 'profile/fetchBasic',
+          payload: {
+            id: id,
+          },
+        });
       },
     });
   }
@@ -86,82 +104,7 @@ class BasicProfile extends Component {
       }
       return obj;
     };
-    const goodsColumns = [
-      {
-        title: '商品编号',
-        dataIndex: 'id',
-        key: 'id',
-        render: (text, row, index) => {
-          if (index < basicGoods.length) {
-            return <a href="">{text}</a>;
-          }
-          return {
-            children: <span style={{ fontWeight: 600 }}>总计</span>,
-            props: {
-              colSpan: 4,
-            },
-          };
-        },
-      },
-      {
-        title: '商品名称',
-        dataIndex: 'name',
-        key: 'name',
-        render: renderContent,
-      },
-      {
-        title: '商品条码',
-        dataIndex: 'barcode',
-        key: 'barcode',
-        render: renderContent,
-      },
-      {
-        title: '单价',
-        dataIndex: 'price',
-        key: 'price',
-        align: 'right',
-        render: renderContent,
-      },
-      {
-        title: '数量（件）',
-        dataIndex: 'num',
-        key: 'num',
-        align: 'right',
-        render: (text, row, index) => {
-          if (index < basicGoods.length) {
-            return text;
-          }
-          return <span style={{ fontWeight: 600 }}>{text}</span>;
-        },
-      },
-      {
-        title: '金额',
-        dataIndex: 'amount',
-        key: 'amount',
-        align: 'right',
-        render: (text, row, index) => {
-          if (index < basicGoods.length) {
-            return text;
-          }
-          return <span style={{ fontWeight: 600 }}>{text}</span>;
-        },
-      },
-    ];
 
-    const data = [
-      {
-        title: 'Title 1',
-      },
-      {
-        title: 'Title 2',
-      },
-      {
-        title: 'Title 3',
-      },
-      {
-        title: 'Title 4',
-      },
-    ];
     return (
       <PageHeaderWrapper title="基础详情页" loading={loading}>
         <Card bordered={false}>
@@ -170,46 +113,74 @@ class BasicProfile extends Component {
             <Description term="创建人">{application.creator}</Description>
             <Description term="创建时间">{application.createTime}</Description>
             <Description term="状态">{application.status}</Description>
+            <Description term="鉴定结果">{application.result}</Description>
           </DescriptionList>
           <Divider style={{ marginBottom: 32 }}/>
+
           <DescriptionList size="large" title="产品信息" style={{ marginBottom: 32 }}>
+            <Description term="">
+              <Card hoverable
+                    bodyStyle={{ padding: 0 }}
+                    style={{ width: '200px', margin: '5%' }}
+                    cover={<img alt="example" src={application.productImage}
+                                style={{ height: '180px' }} onClick={() => {
+                    }}/>}/>
+            </Description>
             <Description term="品牌">{application.brand}</Description>
             <Description term="类别">{application.category}</Description>
-            <Description term="产品示例">{application.delivery}</Description>
           </DescriptionList>
           <Divider style={{ marginBottom: 32 }}/>
 
-          <div className={styles.title}>鉴别图必填</div>
-          {/*<Table*/}
-            {/*style={{ marginBottom: 24 }}*/}
-            {/*pagination={false}*/}
-            {/*loading={loading}*/}
-            {/*dataSource={goodsData}*/}
-            {/*columns={goodsColumns}*/}
-            {/*rowKey="id"*/}
-          {/*/>*/}
-
-          <List
-            grid={{ gutter: 16, column: 4 }}
-            dataSource={data}
-            renderItem={item => (
-              <List.Item>
-                <Card hoverable
-                      bodyStyle={{padding:0}}
-                      style={{ width: "80%" }}
-                      cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" style={{height:"180px"}}/>}/>
-
-              </List.Item>
-            )}
-          />
-          {/*<div className={styles.title}>退货进度</div>*/}
-          {/*<Table*/}
-            {/*style={{ marginBottom: 16 }}*/}
-            {/*pagination={false}*/}
-            {/*loading={loading}*/}
-            {/*dataSource={basicProgress}*/}
-            {/*columns={progressColumns}*/}
-          {/*/>*/}
+          <DescriptionList size="large" title="鉴别图必填" style={{ marginBottom: 32 }}>
+            <List
+              // grid={{ gutter: 16, column: 4 }}
+              dataSource={application.required}
+              renderItem={item => (
+                <List.Item style={{ width: '180px', float: 'left', margin: '0px 20px' }}>
+                  <Card hoverable
+                        bodyStyle={{ padding: 0 }}
+                        cover={<img alt="example" src={item.image}
+                                    style={{ height: '180px' }}/>}/>
+                </List.Item>
+              )}
+            />
+          </DescriptionList>
+          <DescriptionList size="large" title="鉴别图选填" style={{ marginBottom: 32 }}>
+            <List
+              // grid={{ gutter: 16, column: 4 }}
+              dataSource={application.optional}
+              renderItem={item => (
+                <List.Item style={{ width: '180px', float: 'left', margin: '0px 20px' }}>
+                  <Card hoverable
+                        bodyStyle={{ padding: 0 }}
+                        cover={<img alt="example" src={item.image}
+                                    style={{ height: '180px' }}/>}/>
+                </List.Item>
+              )}
+            />
+          </DescriptionList>
+          <div>
+            <Row gutter={16}>
+              <Col className="gutter-row" span={5}>
+                <div className="gutter-box"></div>
+              </Col>
+              <Col className="gutter-row" span={5}>
+                <div className="gutter-box"><Button type="primary"
+                                                    onClick={() => this.handleResult(application.id, 'REAL')}>鉴定为真</Button>
+                </div>
+              </Col>
+              <Col className="gutter-row" span={5}>
+                <div className="gutter-box"><Button type="primary"
+                                                    onClick={() => this.handleResult(application.id, 'FAKE')}>鉴定为假</Button>
+                </div>
+              </Col>
+              <Col className="gutter-row" span={5}>
+                <div className="gutter-box"><Button type="danger"
+                                                    onClick={() => this.handleResult(application.id, 'ILLEGAL')}>违规</Button>
+                </div>
+              </Col>
+            </Row>
+          </div>
         </Card>
       </PageHeaderWrapper>
     );
