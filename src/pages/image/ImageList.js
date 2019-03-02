@@ -304,6 +304,7 @@ class TableList extends PureComponent {
       handleModalVisible: this.handleModalVisible,
       handleAddSuccess: this.handleAddSuccess,
       handleBatchAddSuccess: this.handleBatchAddSuccess,
+      handleBatchImportVisible: this.handleBatchImportVisible,
     };
     let card = (
       <div>

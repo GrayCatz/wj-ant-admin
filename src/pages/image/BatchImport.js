@@ -94,7 +94,7 @@ class BatchImport extends PureComponent {
         visible={modalVisible}
         okText="开始导入"
         onOk={okHandle}
-        onCancel={() => handleModalVisible()}
+        onCancel={() => this.props.handleBatchImportVisible(false)}
       >
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="">
           {form.getFieldDecorator('image', {

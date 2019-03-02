@@ -139,6 +139,12 @@ class ProductProfile extends Component {
     if (!application || application == null) {
       application = {};
     }
+    if(!application.required){
+      application.required = []
+    }
+    if(!application.optional){
+      application.optional = []
+    }
     const fields = this.state.fields;
     // const data = [
     //   {
