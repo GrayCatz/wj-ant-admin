@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import { Button, Card, Divider, Form, Input, message, Select } from 'antd';
 import DescriptionList from '@/components/DescriptionList';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import styles from './BasicProfile.less';
 import ProductImageList from './ProductImageList';
 import { List } from 'antd/lib/list';
 import ImageSelector from '../image/ImageSelector';
@@ -20,6 +19,7 @@ const FormItem = Form.Item;
 class ProductProfile extends Component {
 
   state = {
+    enable: false,
     modalVisible: false,
   };
 
@@ -48,8 +48,13 @@ class ProductProfile extends Component {
   handleSelectImage = (item) => {
     console.log(item);
     this.props.profile.application.img = item.url;
-    this.handleModalVisible(false)
+    this.handleModalVisible(false);
   };
+
+
+  // handleDelete = (item) => {
+  //   item.delete = true;
+  // };
 
   // 查询
   handleSearch = e => {
@@ -66,6 +71,8 @@ class ProductProfile extends Component {
         payload: {
           ...fieldsValue,
           img: application.img,
+          status: this.state.enable?"ENABLE":application.status,
+          remove: application.remove,
           required: application.required,
           optional: application.optional,
         },
@@ -84,6 +91,23 @@ class ProductProfile extends Component {
       });
     });
   };
+
+  handleDelete = (item) => {
+    console.log("handleDelete")
+    if (item.id == 0) return;
+    let remove = this.props.profile.application.remove;
+    if (!remove) {
+      remove = [];
+    }
+    remove.push(item);
+    this.props.profile.application.remove = remove;
+  };
+
+  handleSave(e,enable){
+    console.log( this.props.form);
+    this.state.enable = enable;
+    // this.props.form.submit(e,()=>{});
+  }
 
   mapPropsToFields = (props) => {
     const { profile = {}, loading } = props;
@@ -180,15 +204,15 @@ class ProductProfile extends Component {
             </DescriptionList>
             <Divider style={{ marginBottom: 32 }}/>
 
-            <div className={styles.title}>必填</div>
             <ProductImageList dataSource={application.required} handleSelectImage={this.handleSelectImage}
-                              handleCurItemChange={this.handleCurItemChange}/>
-            <div className={styles.title}>选填</div>
+                              handleCurItemChange={this.handleCurItemChange} handleDelete={this.handleDelete}
+                              type='REQUIRED'/>
+
             <ProductImageList dataSource={application.optional} handleSelectImage={this.handleSelectImage}
-                              handleCurItemChange={this.handleCurItemChange}/>
+                              handleCurItemChange={this.handleCurItemChange} type='OPTIONAL'/>
             <div>
               <Button type="primary" htmlType="submit">保存</Button>
-              <Button type="primary">保存并立刻启用</Button>
+              <Button type="primary" htmlType="submit" onClick={(e)=>this.handleSave(e,true)}>保存并立刻启用</Button>
             </div>
           </Card>
         </Form>
