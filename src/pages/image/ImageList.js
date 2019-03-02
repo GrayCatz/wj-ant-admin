@@ -5,6 +5,7 @@ import { Button, Card, Col, Dropdown, Form, Icon, Input, List, message, Modal, R
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './TableList.less';
 import CreateForm from './CreateForm';
+import BatchImport from './BatchImport';
 
 const FormItem = Form.Item;
 
@@ -27,6 +28,7 @@ const getValue = obj =>
 class TableList extends PureComponent {
   state = {
     modalVisible: false,
+    batchImportVisible: false,
     selectedRows: [],
     formValues: {},
   };
@@ -191,6 +193,12 @@ class TableList extends PureComponent {
     });
   };
 
+  handleBatchImportVisible = flag => {
+    this.setState({
+      batchImportVisible: !!flag,
+    });
+  };
+
 
   renderForm() {
     const {
@@ -211,8 +219,8 @@ class TableList extends PureComponent {
               })(
                 <Select placeholder="" style={{ width: '100%' }}>
                   <Select.Option value="">请选择</Select.Option>
-                  <Select.Option value="PRODUCT">产品鉴别图标</Select.Option>
-                  <Select.Option value="PRODUCT_EXAMPLE">产品鉴别示例图</Select.Option>
+                  <Select.Option value="PRODUCT">产品图</Select.Option>
+                  <Select.Option value="PRODUCT_EXAMPLE">产品鉴别图标</Select.Option>
                   <Select.Option value="PRODUCT_REAL_EXAMPLE">产品鉴别示例图</Select.Option>
                 </Select>,
               )}
@@ -287,6 +295,9 @@ class TableList extends PureComponent {
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                 新建
               </Button>
+              <Button icon="plus" type="primary" onClick={() => this.handleBatchImportVisible(true)}>
+                批量导入
+              </Button>
               {selectedRows.length > 0 && (
                 <span>
                   <Button>批量操作</Button>
@@ -334,6 +345,7 @@ class TableList extends PureComponent {
           </div>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible}/>
+        <BatchImport {...parentMethods} modalVisible={this.state.batchImportVisible}/>
 
       </div>
     );
