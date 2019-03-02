@@ -206,10 +206,14 @@ class TableList extends PureComponent {
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="图片类型">
-              {getFieldDecorator('type')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Select.Option value="0">鉴别图</Select.Option>
-                  <Select.Option value="1">鉴别示例图</Select.Option>
+              {getFieldDecorator('type', {
+                initialValue: '',
+              })(
+                <Select placeholder="" style={{ width: '100%' }}>
+                  <Select.Option value="">请选择</Select.Option>
+                  <Select.Option value="PRODUCT">产品鉴别图标</Select.Option>
+                  <Select.Option value="PRODUCT_EXAMPLE">产品鉴别示例图</Select.Option>
+                  <Select.Option value="PRODUCT_REAL_EXAMPLE">产品鉴别示例图</Select.Option>
                 </Select>,
               )}
             </FormItem>
@@ -274,8 +278,8 @@ class TableList extends PureComponent {
       handleModalVisible: this.handleModalVisible,
       handleAddSuccess: this.handleAddSuccess,
     };
-    return (
-      <PageHeaderWrapper title="图片管理">
+    let card = (
+      <div>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
@@ -314,7 +318,9 @@ class TableList extends PureComponent {
                     cover={<img alt={item.name} src={item.url} style={{
                       height: '180px',
                       width: '100%',
-                    }} onClick={() => {this.props.handleSelectImage(item);}}/>}
+                    }} onClick={() => {
+                      this.props.handleSelectImage ? this.props.handleSelectImage(item) : window.open(item.url);
+                    }}/>}
                   >
                     <Card.Meta
                       style={{}}
@@ -328,7 +334,14 @@ class TableList extends PureComponent {
           </div>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible}/>
-      </PageHeaderWrapper>
+
+      </div>
+    );
+    return (
+      this.props.isSelector ? card :
+        <PageHeaderWrapper title="图片管理">
+          {card}
+        </PageHeaderWrapper>
     );
   }
 }

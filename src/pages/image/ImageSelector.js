@@ -212,7 +212,7 @@ class ImageSelector extends PureComponent {
         onOk={() => handleModalVisible(false)}
         onCancel={() => handleModalVisible(false)}
       >
-        <ImageList handleSelectImage={this.props.handleSelectImage}/>
+        <ImageList handleSelectImage={this.props.handleSelectImage} isSelector={true}/>
       </Modal>
     );
   }

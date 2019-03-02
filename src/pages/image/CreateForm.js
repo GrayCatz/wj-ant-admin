@@ -72,13 +72,15 @@ class CreateForm extends PureComponent {
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="图片类型">
           {form.getFieldDecorator('type', {
             rules: [{ required: true, message: '请选择图片类型' }],
+              initialValue: '',
           })(
             <Select
               style={{ width: '32%' }}
             >
-              <Select.Option value="1">产品图</Select.Option>
-              <Select.Option value="2">产品鉴别图标</Select.Option>
-              <Select.Option value="3">产品鉴别示例图</Select.Option>
+              <Select.Option value="">请选择</Select.Option>
+              <Select.Option value="PRODUCT">产品图</Select.Option>
+              <Select.Option value="PRODUCT_EXAMPLE">产品鉴别图标</Select.Option>
+              <Select.Option value="PRODUCT_REAL_EXAMPLE">产品鉴别示例图</Select.Option>
             </Select>,
           )}
         </FormItem>

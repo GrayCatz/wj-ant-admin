@@ -67,7 +67,6 @@ class TableList extends PureComponent {
     {
       title: '品牌',
       dataIndex: 'name',
-      render: text => <a onClick={() => this.previewItem(text)}>{text}</a>,
     },
     {
       title: '创建时间',
