@@ -94,8 +94,8 @@ class TableList extends PureComponent {
       render: (text, record) => (
         <Fragment>
           <a onClick={() => this.handleDelete(true, record)}>删除</a>
-          <Divider type="vertical"/>
-          <a onClick={() => this.handleDelete(true, record)}>禁用</a>
+          {/*<Divider type="vertical"/>*/}
+          {/*<a onClick={() => this.handleDelete(true, record)}>禁用</a>*/}
         </Fragment>
       ),
     },
@@ -205,7 +205,7 @@ class TableList extends PureComponent {
       this.setState({
         formValues: values,
       });
-
+      console.log("values:",values)
       dispatch({
         type: PAGING,
         payload: values,
@@ -256,12 +256,12 @@ class TableList extends PureComponent {
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="类别名">
-              {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
+              {getFieldDecorator('category')(<Input placeholder="请输入"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="品牌">
-              {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
+              {getFieldDecorator('brand')(<Input placeholder="请输入"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>

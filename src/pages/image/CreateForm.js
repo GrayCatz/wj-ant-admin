@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import OSS from 'ali-oss';
-import { Form, Input, Modal, Select } from 'antd';
+import { Form, Input, message, Modal, Select } from 'antd';
 import AvatarUpload from './AvatarUpload';
 
 const FormItem = Form.Item;
@@ -41,6 +41,10 @@ let setImgFile = (file) => {
 class CreateForm extends PureComponent {
   // 添加
   handleAdd = (fields) => {
+    if (imgFile == null) {
+      message.error('请先选择图片');
+      return;
+    }
     put(imgFile, (url) => {
       this.props.handleAddSuccess(fields, url);
     });
@@ -72,7 +76,7 @@ class CreateForm extends PureComponent {
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="图片类型">
           {form.getFieldDecorator('type', {
             rules: [{ required: true, message: '请选择图片类型' }],
-              initialValue: '',
+            initialValue: '',
           })(
             <Select
               style={{ width: '32%' }}

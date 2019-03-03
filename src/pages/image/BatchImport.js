@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import OSS from 'ali-oss';
-import { Form, Modal } from 'antd';
+import { Form, message, Modal } from 'antd';
 import BatchUpload from './BatchUpload';
 
 const FormItem = Form.Item;
@@ -27,7 +27,7 @@ async function put(file, callback) {
     let r2 = await client.get(file.name);
     console.log('get success: %j', r2);
     callback(file, r1.url);
-    console.info("单个上传完成：",r1)
+    console.info('单个上传完成：', r1);
   } catch (e) {
     console.error('error: %j', e);
   }
@@ -40,7 +40,7 @@ async function putBatch(fileList, callback) {
   // console.log('fileList:');
   // console.log(fileList);
   for (const index in fileList) {
-    console.info("单个上传：",index)
+    console.info('单个上传：', index);
     await put(fileList[index], (file, url) => {
       req.images.push({
         name: file.name,
@@ -48,8 +48,8 @@ async function putBatch(fileList, callback) {
       });
     });
   }
-  console.info("批量上传结束")
-  if(callback)callback(req);
+  console.info('批量上传结束');
+  if (callback) callback(req);
   return req;
 };
 
@@ -68,9 +68,13 @@ class BatchImport extends PureComponent {
   // 添加
 
   handleBatchAdd = (fields) => {
+    if (imgFile == null || imgFile.length == 0) {
+      message.error('请先选择图片');
+      return;
+    }
     // console.log('handleBatchAdd:');
     // console.log(imgFile);
-    let req =  putBatch(imgFile, (req) => {
+    let req = putBatch(imgFile, (req) => {
       // this.props.handleAddSuccess(fields, url);
       this.props.handleBatchAddSuccess(req);
     });
@@ -96,6 +100,19 @@ class BatchImport extends PureComponent {
         onOk={okHandle}
         onCancel={() => this.props.handleBatchImportVisible(false)}
       >
+        <div>
+          <p>导入规则：</p>
+          <p style={{ paddingLeft: '20px' }}>若导入<span style={{ color: 'red' }}>产品图</span>，例如dior烈焰蓝金口红，</p>
+          <p style={{ paddingLeft: '40px' }}>图片命名需为：Dior/迪奥，烈焰蓝金口红-<span style={{ color: 'red' }}>产品图</span></p>
+          <p style={{ paddingLeft: '40px' }}>导入格式：<span style={{ color: 'red' }}>品牌-产品-产品图</span></p>
+          <p style={{ paddingLeft: '20px' }}>若导入<span style={{ color: 'red' }}>产品鉴别图标</span>，例如dior烈焰蓝金口红，</p>
+          <p style={{ paddingLeft: '40px' }}>图片命名需为：Dior/迪奥，烈焰蓝金口红-<span style={{ color: 'red' }}>产品鉴别图标</span></p>
+          <p style={{ paddingLeft: '40px' }}>导入格式：<span style={{ color: 'red' }}>品牌-产品-产品鉴别图标</span></p>
+          <p style={{ paddingLeft: '20px' }}>若导入<span style={{ color: 'red' }}>产品鉴别示例图</span>，例如dior烈焰蓝金口红，</p>
+          <p style={{ paddingLeft: '40px' }}>图片命名需为：Dior/迪奥，烈焰蓝金口红-<span style={{ color: 'red' }}>产品鉴别示例图</span></p>
+          <p style={{ paddingLeft: '40px' }}>导入格式：<span style={{ color: 'red' }}>品牌-产品-产品鉴别示例图</span></p>
+          <p>导入图片格式需要：JPG</p>
+        </div>
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="">
           {form.getFieldDecorator('image', {
             // rules: [{ required: true  ,message: '！}],
