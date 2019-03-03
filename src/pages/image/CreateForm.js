@@ -79,7 +79,7 @@ class CreateForm extends PureComponent {
             initialValue: '',
           })(
             <Select
-              style={{ width: '32%' }}
+              style={{ width: '200px' }}
             >
               <Select.Option value="">请选择</Select.Option>
               <Select.Option value="PRODUCT">产品图</Select.Option>
