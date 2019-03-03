@@ -40,9 +40,9 @@ const progressColumns = [
   },
 ];
 
-@connect(({ profile, loading }) => ({
-  profile,
-  loading: loading.effects['profile/fetchBasic'],
+@connect(({ detail, loading }) => ({
+  detail,
+  loading: loading.effects['detail/fetchBasic'],
 }))
 class BasicProfile extends Component {
   componentDidMount() {
@@ -51,7 +51,7 @@ class BasicProfile extends Component {
 
     console.log(params);
     dispatch({
-      type: 'profile/fetchBasic',
+      type: 'detail/fetchBasic',
       payload: {
         id: params.id || '1000000000',
       },
@@ -61,14 +61,14 @@ class BasicProfile extends Component {
   handleResult(id, result) {
     const { dispatch, match } = this.props;
     dispatch({
-      type: 'profile/changeResult',
+      type: 'detail/changeResult',
       payload: {
         id: id,
         result: result,
       },
       callback: () => {
         dispatch({
-          type: 'profile/fetchBasic',
+          type: 'detail/fetchBasic',
           payload: {
             id: id,
           },
@@ -78,8 +78,8 @@ class BasicProfile extends Component {
   }
 
   render() {
-    const { profile = {}, loading } = this.props;
-    const { basicGoods = [], basicProgress = [], userInfo = {}, application = {} } = profile;
+    const { detail = {}, loading } = this.props;
+    const { basicGoods = [], basicProgress = [], userInfo = {}, application = {} } = detail;
     let goodsData = [];
     if (basicGoods.length) {
       let num = 0;
@@ -106,7 +106,7 @@ class BasicProfile extends Component {
     };
 
     return (
-      <PageHeaderWrapper title="基础详情页" loading={loading}>
+      <PageHeaderWrapper title="订单详情" loading={loading}>
         <Card bordered={false}>
           <DescriptionList size="large" title="订单信息" style={{ marginBottom: 32 }}>
             <Description term="鉴定单号">{application.serial}</Description>

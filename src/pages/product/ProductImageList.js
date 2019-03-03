@@ -70,40 +70,58 @@ class ProductImageList extends Component {
     this.state.dataSource = dataSource;
     return (
       <div>
-        <div className={styles.title}>必填 <Button type="primary" shape="circle" icon="plus" size="small" onClick={() => this.handleAdd()}/></div>
+        <div className={styles.title}>{this.props.type=="REQUIRED"?"必填":"选填"} <Button type="primary" shape="circle" icon="plus" size="small"
+                                                 onClick={() => this.handleAdd()}/></div>
         <List
-          grid={{ gutter: 16, column: 4 }}
+          // grid={{ gutter: 16, column: 4 }}
           dataSource={this.state.dataSource}
           renderItem={(item, index) => (
-            <div>
+            <div
+            >
               <List.Item
-                style={{
-                  border: '1px solid #ccc',
-                  textAlign: 'center',
-                  padding: '20px',
-                  position: 'relative',
-                  display: item.delete ? 'none' : '',
-                }}>
-                <div>
-                  <span>{item.name}</span>
+                // style={{
+                //   border: '1px solid #ccc',
+                //   textAlign: 'center',
+                //   padding: '20px',
+                //   position: 'relative',
+                //   display: item.delete ? 'none' : '',
+                // }}
+                style={{ width: '200px', float: 'left', marginRight: '20px' }}
+              >
+                <div
+                  style={{
+                    width: '200px',
+                    float: 'left',
+                    margin: '0px 20px',
+                    textAlign: 'center',
+                    border: '1px solid #ccc',
+                    position: 'relative',
+                  }}
+                >
+                  <div
+                    style={{ lineHeight: '30px' }}
+                  >{item.name}</div>
                   <div style={{ cursor: 'pointer', position: 'absolute', right: 15, top: 10 }}><Icon type="close"
                                                                                                      onClick={() => this.handleDelete(item, index)}/>
                   </div>
+                  <Card hoverable
+                        bodyStyle={{ padding: 0 }}
+                    // style={{ width: '90%', margin: '5%' }}
+                        style={{ width: '180px', margin: '10px' }}
+                        cover={<img alt="example" src={item.example.url}
+                                    style={{ height: '180px' }} onClick={() => {
+                          this.handleModalVisible1(true, item.example);
+                        }}/>}/>
+                  <Card hoverable
+                        bodyStyle={{ padding: 0 }}
+                    // style={{ width: '90%', margin: '5%' }}
+                        style={{ width: '180px', margin: '10px' }}
+                        cover={<img alt="example" src={item.realExample.url}
+                                    style={{ height: '180px' }} onClick={() => {
+                          this.handleModalVisible1(true, item.realExample);
+                        }}/>}/>
                 </div>
-                <Card hoverable
-                      bodyStyle={{ padding: 0 }}
-                      style={{ width: '90%', margin: '5%' }}
-                      cover={<img alt="example" src={item.example.url}
-                                  style={{ height: '180px' }} onClick={() => {
-                        this.handleModalVisible1(true, item.example);
-                      }}/>}/>
-                <Card hoverable
-                      bodyStyle={{ padding: 0 }}
-                      style={{ width: '90%', margin: '5%' }}
-                      cover={<img alt="example" src={item.realExample.url}
-                                  style={{ height: '180px' }} onClick={() => {
-                        this.handleModalVisible1(true, item.realExample);
-                      }}/>}/>
+
               </List.Item>
               <ImageSelector modalVisible={this.state.modalVisible} handleModalVisible={this.handleModalVisible}
                              handleSelectImage={this.handleSelectImage}/>

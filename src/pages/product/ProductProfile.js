@@ -80,7 +80,7 @@ class ProductProfile extends Component {
         },
         callback: (response) => {
           console.log('callback');
-          if (response.code==1) {
+          if (response.code == 1) {
             message.success('保存成功');
             router.push(`/product/detail/${response.data}`);
             // const { dispatch, match } = this.props;
@@ -139,11 +139,11 @@ class ProductProfile extends Component {
     if (!application || application == null) {
       application = {};
     }
-    if(!application.required){
-      application.required = []
+    if (!application.required) {
+      application.required = [];
     }
-    if(!application.optional){
-      application.optional = []
+    if (!application.optional) {
+      application.optional = [];
     }
     const fields = this.state.fields;
     // const data = [
@@ -161,7 +161,7 @@ class ProductProfile extends Component {
     //   },
     // ];
     return (
-      <PageHeaderWrapper title="产品详情页" loading={loading}>
+      <PageHeaderWrapper title="产品详情" loading={loading}>
         <Form onSubmit={this.handleSearch} layout="inline">
 
           <Card bordered={false}>
@@ -217,7 +217,7 @@ class ProductProfile extends Component {
               <Description term="">
                 <Card hoverable
                       bodyStyle={{ padding: 0 }}
-                      style={{ width: '90%', margin: '5%' }}
+                      style={{ width: '180px', margin: '5%' }}
                       cover={application.img == null ? <Empty onClick={() => {
                         this.handleModalVisible(true);
                       }}/> : <img alt="example" src={application.img}
@@ -228,12 +228,16 @@ class ProductProfile extends Component {
             </DescriptionList>
             <Divider style={{ marginBottom: 32 }}/>
 
-            <ProductImageList dataSource={application.required} handleSelectImage={this.handleSelectImage}
-                              handleCurItemChange={this.handleCurItemChange} handleDelete={this.handleDelete}
-                              type='REQUIRED'/>
-            <ProductImageList dataSource={application.optional} handleSelectImage={this.handleSelectImage}
-                              handleCurItemChange={this.handleCurItemChange} handleDelete={this.handleDelete}
-                              type='OPTIONAL'/>
+            <DescriptionList size="large" title="" style={{ marginBottom: 32 }}>
+              <ProductImageList dataSource={application.required} handleSelectImage={this.handleSelectImage}
+                                handleCurItemChange={this.handleCurItemChange} handleDelete={this.handleDelete}
+                                type='REQUIRED'/>
+            </DescriptionList>
+            <DescriptionList size="large" title="" style={{ marginBottom: 32 }}>
+              <ProductImageList dataSource={application.optional} handleSelectImage={this.handleSelectImage}
+                                handleCurItemChange={this.handleCurItemChange} handleDelete={this.handleDelete}
+                                type='OPTIONAL'/>
+            </DescriptionList>
             <div>
               <Button type="primary" htmlType="submit">保存</Button>
               {/*<Button type="primary" htmlType="submit" onClick={(e) => this.handleSave(e, true)}>保存并立刻启用</Button>*/}

@@ -1,7 +1,7 @@
 import { appraisalGet,appraisalResultChange } from '@/services/api';
 
 export default {
-  namespace: 'profile',
+  namespace: 'detail',
 
   state: {
     basicGoods: [],
