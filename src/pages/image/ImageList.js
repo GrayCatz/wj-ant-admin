@@ -143,7 +143,7 @@ class TableList extends PureComponent {
   };
 
   // 删除
-  handleDelete = (key, currentItem) => {
+  handleDelete = (item) => {
     const { dispatch } = this.props;
     Modal.confirm({
       title: '删除项目',
@@ -154,9 +154,10 @@ class TableList extends PureComponent {
         dispatch({
           type: REMOVE,
           payload: {
-            id: currentItem.id,
+            id: item.id,
           },
           callback: () => {
+            message.success('删除成功');
             dispatch({
               type: PAGING,
               payload: {},
@@ -344,6 +345,17 @@ class TableList extends PureComponent {
                 <List.Item style={{ width: '182px', height: '150px', float: 'left', margin: '30px 20px' }}>
                   <Card
                     className={styles.card}
+                    extra={<Icon type="close"
+                                 onClick={() => this.handleDelete(item)}/>}
+                    // loading={true}
+                    headStyle={{
+                      height: '0px',
+                      position: 'absolute',
+                      right: '10px',
+                      color: 'red',
+                      border: '0',
+                      padding: '0',
+                    }}
                     bodyStyle={{ padding: '5px', textAlign: 'center', height: '30px' }}
                     hoverable
                     // cover={<a href={item.url} target="blank" style={{ width: '100%' }} onClick={()=>{this.props.handleSelectImage(item)}}><img alt={item.name}
