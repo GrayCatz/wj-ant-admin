@@ -24,7 +24,7 @@ export async function brandPaging(params) {
 }
 
 export async function brandGet(params) {
-  return request('http://127.0.0.1:2002/api/v1/brand/get');
+  return request(`${host}/api/v1/brand/get`);
 }
 
 export async function brandAdd(params) {
@@ -99,7 +99,7 @@ export async function categoryPaging(params) {
 }
 
 export async function categoryGet(params) {
-  return request('${host}/api/v1/category/get');
+  return request(`${host}/api/v1/category/get`);
 }
 
 export async function categoryAdd(params) {
