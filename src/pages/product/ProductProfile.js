@@ -21,7 +21,7 @@ class ProductProfile extends Component {
 
   state = {
     // enable: false,
-    modalVisible: false,
+    // nameFormVisible: this.props.nameFormVisible,
   };
 
   componentDidMount() {
@@ -231,7 +231,7 @@ class ProductProfile extends Component {
               <Description term="">
                 <Card hoverable
                       bodyStyle={{ padding: 0 }}
-                      style={{ width: '180px', margin: '5%' }}
+                      style={{ width: '250px', margin: '5%' }}
                       cover={application.img == null ? <Empty onClick={() => {
                         this.handleModalVisible(true);
                       }}/> : <img alt="example" src={application.img}
@@ -260,6 +260,7 @@ class ProductProfile extends Component {
         </Form>
         <ImageSelector modalVisible={this.state.modalVisible} handleModalVisible={this.handleModalVisible}
                        handleSelectImage={this.handleSelectImage}/>
+
       </PageHeaderWrapper>
     );
   }

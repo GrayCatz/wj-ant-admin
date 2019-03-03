@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Card, Icon, List } from 'antd';
 import ImageSelector from '../image/ImageSelector';
 import styles from './BasicProfile.less';
+import NameForm from './NameForm';
 
 class ProductImageList extends Component {
 
@@ -9,6 +10,11 @@ class ProductImageList extends Component {
     modalVisible: false,
     curItem: null,
     dataSource: this.props.dataSource,
+    nameFormVisible: false,
+  };
+
+  handleNameFormVisible = (nameFormVisible) => {
+    this.setState({ nameFormVisible});
   };
 
   // handleSelector = (file) => {
@@ -52,12 +58,12 @@ class ProductImageList extends Component {
     this.props.handleDelete(item);
   };
 
-  handleAdd = () => {
+  handleAdd = (fiedValues) => {
     this.state.dataSource.push({
       id: 0,
       example: { url: '' },
-      name: '管体正面',
-      realExample: { url: 'http://mz-dev-2.oss-cn-shenzhen.aliyuncs.com/20141226115820_hxv3N.thumb.700_0.jpeg' },
+      name: fiedValues.name,
+      realExample: { url: '' },
       type: this.props.type,
     });
     this.setState({
@@ -67,11 +73,20 @@ class ProductImageList extends Component {
 
   render() {
     const { profile = {}, loading, dataSource } = this.props;
+    const { nameFormVisible } = this.state;
+    // console.log(nameFormVisible)
+
     this.state.dataSource = dataSource;
     return (
       <div>
-        <div className={styles.title}>{this.props.type=="REQUIRED"?"必填":"选填"} <Button type="primary" shape="circle" icon="plus" size="small"
-                                                 onClick={() => this.handleAdd()}/></div>
+        <div className={styles.title} style={{paddingLeft:"20px"}}>{this.props.type == 'REQUIRED' ? '必填' : '选填'} <Button type="primary"
+                                                                                            shape="circle" icon="plus"
+                                                                                            size="small"
+                                                                                            onClick={() => this.handleNameFormVisible(true)}/>
+          <NameForm visible={this.state.nameFormVisible}
+                    handleModalVisible={this.handleNameFormVisible}
+                    handleAdd={this.handleAdd}/>
+        </div>
         <List
           // grid={{ gutter: 16, column: 4 }}
           dataSource={this.state.dataSource}
@@ -99,35 +114,48 @@ class ProductImageList extends Component {
                   }}
                 >
                   <div
-                    style={{ lineHeight: '30px' }}
+                    style={{ lineHeight: '35px',fontWeight:"bold",fontSize:"18px" }}
                   >{item.name}</div>
                   <div style={{ cursor: 'pointer', position: 'absolute', right: 15, top: 10 }}><Icon type="close"
                                                                                                      onClick={() => this.handleDelete(item, index)}/>
                   </div>
                   <Card hoverable
-                        bodyStyle={{ padding: 0 }}
+                        bodyStyle={{ height:"30px",lineHeight:"35px",padding: 0,borderTop:"1px solid #ccc", }}
                     // style={{ width: '90%', margin: '5%' }}
                         style={{ width: '180px', margin: '10px' }}
                         cover={<img alt="example" src={item.example.url}
                                     style={{ height: '180px' }} onClick={() => {
                           this.handleModalVisible1(true, item.example);
-                        }}/>}/>
+                        }}/>}
+                  >
+                    <Card.Meta
+                      title="鉴别图"
+                    />
+                  </Card>
                   <Card hoverable
-                        bodyStyle={{ padding: 0 }}
+                        bodyStyle={{ height:"30px",lineHeight:"35px",padding: 0,borderTop:"1px solid #ccc", }}
                     // style={{ width: '90%', margin: '5%' }}
                         style={{ width: '180px', margin: '10px' }}
                         cover={<img alt="example" src={item.realExample.url}
                                     style={{ height: '180px' }} onClick={() => {
                           this.handleModalVisible1(true, item.realExample);
-                        }}/>}/>
+                        }}/>}>
+                    <Card.Meta
+                      title="鉴别示例图"
+                    />
+
+                  </Card>
                 </div>
 
               </List.Item>
               <ImageSelector modalVisible={this.state.modalVisible} handleModalVisible={this.handleModalVisible}
                              handleSelectImage={this.handleSelectImage}/>
+
+
             </div>
           )}
         />
+
       </div>
     );
   }
