@@ -126,7 +126,7 @@ class TableList extends PureComponent {
 
   // 添加
   handleBatchAddSuccess = (req) => {
-    console.log("handleBatchAddSuccess")
+    console.log('handleBatchAddSuccess');
     const { dispatch } = this.props;
     dispatch({
       type: BATCH_ADD,
@@ -272,12 +272,14 @@ class TableList extends PureComponent {
     let paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
+      defaultCurrent: 1,
+      defaultPageSize: 20,
       ...data.pagination,
       // pageSize: 10,
       // total: 50,
       onChange: (page, pageSize) => {
-        console.log("data:",page)
-        console.log("data:",pageSize)
+        console.log('data:', page);
+        console.log('data:', pageSize);
         const { dispatch } = this.props;
         const params = {
           page: page,
@@ -339,7 +341,7 @@ class TableList extends PureComponent {
               dataSource={data.list}
               pagination={paginationProps}
               renderItem={item => (
-                <List.Item  style={{ width: '182px', height: '150px', float: 'left', margin: '30px 20px' }}>
+                <List.Item style={{ width: '182px', height: '150px', float: 'left', margin: '30px 20px' }}>
                   <Card
                     className={styles.card}
                     bodyStyle={{ padding: '5px', textAlign: 'center', height: '30px' }}
@@ -350,11 +352,11 @@ class TableList extends PureComponent {
                     //   width: '100%',
                     // }}/></a>}
                     cover={<img alt={item.name} src={item.url}
-                                // style={{height: '180px',width: '100%',}}
-                                style={{width: '180px', height: '150px'}}
+                      // style={{height: '180px',width: '100%',}}
+                                style={{ width: '180px', height: '150px' }}
                                 onClick={() => {
-                      this.props.handleSelectImage ? this.props.handleSelectImage(item) : window.open(item.url);
-                    }}/>}
+                                  this.props.handleSelectImage ? this.props.handleSelectImage(item) : window.open(item.url);
+                                }}/>}
                   >
                     <Card.Meta
                       style={{}}

@@ -11,6 +11,7 @@ const ADD = 'product/add';
 const PAGING = 'product/fetch';
 const REMOVE = 'product/remove';
 const GET = 'product/get';
+const UPDATE_STATUS = 'product/updateStatus';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -91,11 +92,11 @@ class TableList extends PureComponent {
     },
     {
       title: '操作',
-      render: (text, record) => (
+      render: (record) => (
         <Fragment>
           <a onClick={() => this.handleDelete(true, record)}>删除</a>
-          {/*<Divider type="vertical"/>*/}
-          {/*<a onClick={() => this.handleDelete(true, record)}>禁用</a>*/}
+          <Divider type="vertical"/>
+          <a onClick={() => this.handleChangeStatus(record)}>{record.status == '启用' ? '禁用' : '启用'}</a>
         </Fragment>
       ),
     },
@@ -188,6 +189,33 @@ class TableList extends PureComponent {
     });
   };
 
+  // 删除
+  handleChangeStatus = (item) => {
+    console.log(item)
+    const { dispatch } = this.props;
+    Modal.confirm({
+      title: '更新状态',
+      content: `确认${item.status == '启用' ? '禁用' : '启用'}该产品？`,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        dispatch({
+          type: UPDATE_STATUS,
+          payload: {
+            id: item.id,
+            status: item.status == '启用' ? 'DISABLE' : 'ENABLE',
+          },
+          callback: () => {
+            dispatch({
+              type: PAGING,
+              payload: {},
+            });
+          },
+        });
+      },
+    });
+  };
+
   // 查询
   handleSearch = e => {
     e.preventDefault();
@@ -205,7 +233,7 @@ class TableList extends PureComponent {
       this.setState({
         formValues: values,
       });
-      console.log("values:",values)
+      console.log('values:', values);
       dispatch({
         type: PAGING,
         payload: values,

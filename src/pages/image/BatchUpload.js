@@ -11,7 +11,7 @@ function getBase64(img, callback) {
 const props = {
   // action: '//jsonplaceholder.typicode.com/posts/',
   listType: 'picture',
-
+  // beforeUpload={this.props.beforeUpload}
   // defaultFileList: [...fileList],
 };
 
@@ -21,8 +21,8 @@ class BatchUpload extends React.Component {
   };
 
   handleChange = (info) => {
-    console.log(info)
-    console.log(info.file.status)
+    // console.log(info)
+    // console.log(info.file.status)
 
     if (info.file.status === 'uploading') {
       this.setState({ loading: true });
@@ -42,7 +42,7 @@ class BatchUpload extends React.Component {
 
     return (
 
-      <Upload {...props} directory onChange={this.handleChange}>
+      <Upload {...props} directory onChange={this.handleChange} accept=".jpg, .jpeg" beforeUpload={this.props.beforeUpload}>
         <Button>
           <Icon type="upload"/> 选择文件夹
         </Button>

@@ -1,5 +1,5 @@
 
-import { productAdd, productGet, productPaging, productRemove } from '@/services/api';
+import { productAdd, productGet, productPaging, productRemove,productUpdateStatus } from '@/services/api';
 
 export default {
   namespace: 'product',
@@ -31,6 +31,15 @@ export default {
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(productAdd, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      if (callback) callback();
+    },
+    *updateStatus({ payload, callback }, { call, put }) {
+
+      const response = yield call(productUpdateStatus, payload);
       yield put({
         type: 'save',
         payload: response,

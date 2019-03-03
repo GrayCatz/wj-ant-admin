@@ -56,6 +56,23 @@ async function putBatch(fileList, callback) {
 
 @Form.create()
 class BatchImport extends PureComponent {
+
+  beforeUpload = (file) => {
+    // const isJPG = file.type === 'image/jpeg';
+    // console.log(file.type)
+    // if (!isJPG) {
+    //   message.error('只允许上传jpg格式的图片!');
+    //   return false;
+    // }
+    // // const isLt2M = file.size / 1024 / 1024 < 2;
+    // // if (!isLt2M) {
+    // //   message.error('Image must smaller than 2MB!');
+    // // }
+    // // return isJPG && isLt2M;
+    // return isJPG;
+  };
+
+
   // 添加
   handleAdd = (fields) => {
     put(imgFile, (url) => {
@@ -116,7 +133,7 @@ class BatchImport extends PureComponent {
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="">
           {form.getFieldDecorator('image', {
             // rules: [{ required: true  ,message: '！}],
-          })(<BatchUpload setImgFile={this.setImgFile}></BatchUpload>)}
+          })(<BatchUpload setImgFile={this.setImgFile} beforeUpload={this.beforeUpload}></BatchUpload>)}
         </FormItem>
       </Modal>
     );

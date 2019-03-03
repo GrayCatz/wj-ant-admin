@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Upload } from 'antd';
+import { Icon, message, Upload } from 'antd';
 
 
 function getBase64(img, callback) {
@@ -8,10 +8,27 @@ function getBase64(img, callback) {
   reader.readAsDataURL(img);
 }
 
+
 class AvatarUpload extends React.Component {
   state = {
     loading: false,
   };
+
+  beforeUpload = (file) => {
+    const isJPG = file.type === 'image/jpeg';
+    console.log(file.type)
+    if (!isJPG) {
+      message.error('只允许上传jpg格式的图片!');
+      // return false;
+    }
+    // const isLt2M = file.size / 1024 / 1024 < 2;
+    // if (!isLt2M) {
+    //   message.error('Image must smaller than 2MB!');
+    // }
+    // return isJPG && isLt2M;
+    return isJPG;
+  };
+
 
   handleChange = (info) => {
     if (info.file.status === 'uploading') {
@@ -44,12 +61,12 @@ class AvatarUpload extends React.Component {
         className="avatar-uploader"
         showUploadList={false}
         // action="//jsonplaceholder.typicode.com/posts/"
-        // beforeUpload={beforeUpload}
+        beforeUpload={this.beforeUpload}
         onChange={this.handleChange}
-  >
-  {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '150px', height: '150px' }}/> : uploadButton}
-  </Upload>
-  )
+      >
+        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '150px', height: '150px' }}/> : uploadButton}
+      </Upload>
+    );
   }
 }
 

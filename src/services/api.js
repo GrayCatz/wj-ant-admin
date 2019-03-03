@@ -2,14 +2,15 @@ import { stringify } from 'qs';
 import request from '@/utils/request';
 import md5 from 'md5';
 
-// const  host = "http://127.0.0.1:2003";
+// const host = 'http://127.0.0.1:2003';
+
 const  host = "http://47.112.33.199:2003";
 
 export async function login(params) {
   return request(
     `${host}/api/v1/token/add?username=${params.username ? params.username : ''}&password=${
       params.password ? md5(params.password) : ''
-      }`
+      }`,
   );
 
 }
@@ -43,9 +44,9 @@ export async function brandRemove(params) {
 
 export async function productPaging(params) {
   return request(
-    `${host}/api/v1/product/paging?name=${params.name ? params.name : ''}&page=${
+    `${host}/api/v1/product/paging?name=${params.name ? params.name : ''}&category=${params.category ? params.category : ''}&brand=${params.brand ? params.brand : ''}&page=${
       params.page ? params.page : ''
-      }&size=${params.size ? params.size : ''}`,
+      }&size=${params.size ? params.size : 20}`,
   );
 }
 
@@ -82,6 +83,10 @@ export async function productUpdate(params = {}) {
 export async function productRemove(params) {
   console.info(params);
   return request(`${host}/api/v1/product/remove?id=${params.id}`);
+}
+
+export async function productUpdateStatus(params) {
+  return request(`${host}/api/v1/product_status/update?id=${params.id}&status=${params.status}`);
 }
 
 
@@ -149,7 +154,7 @@ export async function imagePaging(params) {
   return request(
     `${host}/api/v1/image/paging?name=${params.name ? params.name : ''}&type=${params.type ? params.type : ''}&page=${
       params.page ? params.page : ''
-      }&size=${params.size ? params.size : ''}`,
+      }&size=${params.size ? params.size : 20}`,
   );
 }
 
