@@ -11,10 +11,11 @@ class ProductImageList extends Component {
     curItem: null,
     dataSource: this.props.dataSource,
     nameFormVisible: false,
+    namedItem: null,
   };
 
-  handleNameFormVisible = (nameFormVisible) => {
-    this.setState({ nameFormVisible});
+  handleNameFormVisible = (nameFormVisible, namedItem) => {
+    this.setState({ nameFormVisible, namedItem });
   };
 
   // handleSelector = (file) => {
@@ -58,17 +59,21 @@ class ProductImageList extends Component {
     this.props.handleDelete(item);
   };
 
-  handleAdd = (fiedValues) => {
-    this.state.dataSource.push({
-      id: 0,
-      example: { url: '' },
-      name: fiedValues.name,
-      realExample: { url: '' },
-      type: this.props.type,
-    });
-    this.setState({
-      dataSource: this.state.dataSource,
-    });
+  handleAdd = (fieldValues, namedItem) => {
+    if (namedItem) {
+      namedItem.name = fieldValues.name;
+    } else {
+      this.state.dataSource.push({
+        id: 0,
+        example: { url: '' },
+        name: fieldValues.name,
+        realExample: { url: '' },
+        type: this.props.type,
+      });
+      this.setState({
+        dataSource: this.state.dataSource,
+      });
+    }
   };
 
   render() {
@@ -79,13 +84,16 @@ class ProductImageList extends Component {
     this.state.dataSource = dataSource;
     return (
       <div>
-        <div className={styles.title} style={{paddingLeft:"20px"}}>{this.props.type == 'REQUIRED' ? '必填' : '选填'} <Button type="primary"
-                                                                                            shape="circle" icon="plus"
-                                                                                            size="small"
-                                                                                            onClick={() => this.handleNameFormVisible(true)}/>
+        <div className={styles.title} style={{ paddingLeft: '20px'}}>{this.props.type == 'REQUIRED' ? '必填' : '选填'}
+          <Button type="primary"
+                  shape="circle" icon="plus"
+                  style={{ marginLeft:"20px" }}
+                  size="small"
+                  onClick={() => this.handleNameFormVisible(true)}/>
           <NameForm visible={this.state.nameFormVisible}
                     handleModalVisible={this.handleNameFormVisible}
-                    handleAdd={this.handleAdd}/>
+                    handleAdd={this.handleAdd}
+                    namedItem={this.state.namedItem}/>
         </div>
         <List
           // grid={{ gutter: 16, column: 4 }}
@@ -114,13 +122,14 @@ class ProductImageList extends Component {
                   }}
                 >
                   <div
-                    style={{ lineHeight: '35px',fontWeight:"bold",fontSize:"18px" }}
+                    style={{ lineHeight: '35px', fontWeight: 'bold', fontSize: '18px', cursor: 'pointer' }}
+                    onClick={() => this.handleNameFormVisible(true, item)}
                   >{item.name}</div>
                   <div style={{ cursor: 'pointer', position: 'absolute', right: 15, top: 10 }}><Icon type="close"
                                                                                                      onClick={() => this.handleDelete(item, index)}/>
                   </div>
                   <Card hoverable
-                        bodyStyle={{ height:"30px",lineHeight:"35px",padding: 0,borderTop:"1px solid #ccc", }}
+                        bodyStyle={{ height: '30px', lineHeight: '35px', padding: 0, borderTop: '1px solid #ccc' }}
                     // style={{ width: '90%', margin: '5%' }}
                         style={{ width: '180px', margin: '10px' }}
                         cover={<img alt="example" src={item.example.url}
@@ -133,7 +142,7 @@ class ProductImageList extends Component {
                     />
                   </Card>
                   <Card hoverable
-                        bodyStyle={{ height:"30px",lineHeight:"35px",padding: 0,borderTop:"1px solid #ccc", }}
+                        bodyStyle={{ height: '30px', lineHeight: '35px', padding: 0, borderTop: '1px solid #ccc' }}
                     // style={{ width: '90%', margin: '5%' }}
                         style={{ width: '180px', margin: '10px' }}
                         cover={<img alt="example" src={item.realExample.url}

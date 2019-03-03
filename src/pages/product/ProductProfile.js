@@ -211,6 +211,8 @@ class ProductProfile extends Component {
                   })(<Input placeholder="请输入"/>)}
                 </FormItem>
               </Description>
+            </DescriptionList>
+            <DescriptionList size="large" title="" style={{ marginBottom: 32 }}>
               <Description term="">
                 <Form.Item label="状态">
                   {getFieldDecorator('status', {
