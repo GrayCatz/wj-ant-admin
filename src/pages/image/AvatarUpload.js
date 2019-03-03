@@ -38,6 +38,7 @@ class AvatarUpload extends React.Component {
     const imageUrl = this.state.imageUrl;
     return (
       <Upload
+        action="/"
         name="avatar"
         listType="picture-card"
         className="avatar-uploader"
@@ -45,10 +46,10 @@ class AvatarUpload extends React.Component {
         // action="//jsonplaceholder.typicode.com/posts/"
         // beforeUpload={beforeUpload}
         onChange={this.handleChange}
-      >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '150px', height: '150px' }}/> : uploadButton}
-      </Upload>
-    );
+  >
+  {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '150px', height: '150px' }}/> : uploadButton}
+  </Upload>
+  )
   }
 }
 
