@@ -23,7 +23,7 @@ class NameForm extends PureComponent {
     return (
       <Modal
         destroyOnClose
-        title="添加"
+        title={namedItem?"重命名":"添加"}
         visible={visible}
         onOk={okHandle}
         onCancel={() => handleModalVisible(false)}
