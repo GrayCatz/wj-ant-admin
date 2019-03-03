@@ -332,11 +332,11 @@ class TableList extends PureComponent {
             <List
               rowKey="id"
               loading={loading}
-              grid={{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }}
+              grid={{ gutter: 20, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }}
               dataSource={data.list}
               pagination={paginationProps}
               renderItem={item => (
-                <List.Item>
+                <List.Item  style={{ width: '180px', height: '150px', float: 'left', margin: '30px 20px' }}>
                   <Card
                     className={styles.card}
                     bodyStyle={{ padding: '5px', textAlign: 'center', height: '30px' }}
@@ -346,10 +346,10 @@ class TableList extends PureComponent {
                     //   height: '180px',
                     //   width: '100%',
                     // }}/></a>}
-                    cover={<img alt={item.name} src={item.url} style={{
-                      height: '180px',
-                      width: '100%',
-                    }} onClick={() => {
+                    cover={<img alt={item.name} src={item.url}
+                                // style={{height: '180px',width: '100%',}}
+                                style={{width: '180px', height: '150px'}}
+                                onClick={() => {
                       this.props.handleSelectImage ? this.props.handleSelectImage(item) : window.open(item.url);
                     }}/>}
                   >

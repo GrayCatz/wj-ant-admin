@@ -45,14 +45,28 @@ export default [
         path: '/product',
         name: 'product',
         icon: 'dashboard',
-        component: './product/ProductList',
+        routes: [
+          {
+            path: '/product/list',
+            name: 'list',
+            icon: 'profile',
+            component: './product/ProductList',
+          },
+          {
+            path: '/product/detail/:id',
+            name: 'detail',
+            icon: 'profile',
+            hideInMenu: true,
+            component: './product/ProductProfile.js',
+          },
+        ],
       },
-      {
-        path: '/product/detail/:id',
-        name: 'detail',
-        icon: 'profile',
-        component: './product/ProductProfile.js',
-      },
+      // {
+      //   path: '/product/detail/:id',
+      //   name: 'detail',
+      //   icon: 'profile',
+      //   component: './product/ProductProfile.js',
+      // },
       // {
       //   path: '/appraisal',
       //   name: 'appraisal',
@@ -67,17 +81,38 @@ export default [
       //     },
       //   ],
       // },
+      // {
+      //   path: '/appraisal',
+      //   name: 'appraisal',
+      //   icon: 'dashboard',
+      //   component: './appraisal/AppraisalList',
+      // },
+      // {
+      //   path: '/appraisal/detail/:id',
+      //   name: 'detail',
+      //   icon: 'profile',
+      //   component: './appraisal/BasicProfile.js',
+      // },
+
       {
         path: '/appraisal',
         name: 'appraisal',
         icon: 'dashboard',
-        component: './appraisal/AppraisalList',
-      },
-      {
-        path: '/appraisal/detail/:id',
-        name: 'detail',
-        icon: 'profile',
-        component: './appraisal/BasicProfile.js',
+        routes: [
+          {
+            path: '/appraisal/list',
+            name: 'list',
+            icon: 'dashboard',
+            component: './appraisal/AppraisalList',
+          },
+          {
+            path: '/appraisal/detail/:id',
+            name: 'detail',
+            icon: 'profile',
+            hideInMenu: true,
+            component: './appraisal/BasicProfile.js',
+          },
+        ],
       },
       // {
       //   path: '/appraisal/detail/:id',
