@@ -107,7 +107,7 @@ class TableList extends PureComponent {
   handleAddSuccess = (fields, url) => {
     const { dispatch } = this.props;
     dispatch({
-      type: BATCH_ADD,
+      type: ADD,
       payload: {
         name: fields.name,
         type: fields.type,
