@@ -12,6 +12,15 @@ export default {
 
   effects: {
     * fetchBasic({ payload }, { call, put }) {
+      if (payload.id == 0){
+        yield put({
+          type: 'show',
+          payload: {
+            application: {},
+          },
+        });
+        return;
+      };
       const response = yield call(productGet, payload);
       yield put({
         type: 'show',

@@ -28,7 +28,7 @@ class ProductProfile extends Component {
     const { dispatch, match } = this.props;
     const { params } = match;
 
-    if (params.id == 0) return;
+
     dispatch({
       type: 'profile/fetchBasic',
       payload: {
@@ -36,6 +36,20 @@ class ProductProfile extends Component {
       },
     });
   }
+
+  // componentDidUpdate() {
+  //   const { dispatch, match } = this.props;
+  //   const { params } = match;
+  //
+  //   if (params.id == 0) return;
+  //   dispatch({
+  //     type: 'profile/fetchBasic',
+  //     payload: {
+  //       id: params.id || '1000000000',
+  //     },
+  //   });
+  // }
+
 
   handleModalVisible = (modalVisible) => {
     this.setState({ modalVisible });
