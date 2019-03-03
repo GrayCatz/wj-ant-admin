@@ -261,31 +261,39 @@ class TableList extends PureComponent {
 
   render() {
 
-    const paginationProps = {
+
+    const {
+      image: { data },
+      loading,
+    } = this.props;
+    const { selectedRows, modalVisible } = this.state;
+
+    // console.log("data:",data)
+    let paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      pageSize: 10,
-      total: 50,
-      onChange: (pagination, filtersArg, sorter) => {
+      ...data.pagination,
+      // pageSize: 10,
+      // total: 50,
+      onChange: (page, pageSize) => {
+        console.log("data:",page)
+        console.log("data:",pageSize)
         const { dispatch } = this.props;
-        const { formValues } = this.state;
-
-        const filters = Object.keys(filtersArg).reduce((obj, key) => {
-          const newObj = { ...obj };
-          newObj[key] = getValue(filtersArg[key]);
-          return newObj;
-        }, {});
-
         const params = {
-          page: pagination.current,
-          size: pagination.pageSize,
-          ...formValues,
-          ...filters,
+          page: page,
+          size: pageSize,
         };
-        // if (sorter.field) {
-        //   params.sorter = `${sorter.field}_${sorter.order}`;
-        // }
-
+        dispatch({
+          type: PAGING,
+          payload: params,
+        });
+      },
+      onShowSizeChange: (page, pageSize) => {
+        const { dispatch } = this.props;
+        const params = {
+          page: page,
+          size: pageSize,
+        };
         dispatch({
           type: PAGING,
           payload: params,
@@ -293,11 +301,6 @@ class TableList extends PureComponent {
       },
     };
 
-    const {
-      image: { data },
-      loading,
-    } = this.props;
-    const { selectedRows, modalVisible } = this.state;
 
     const parentMethods = {
       handleAdd: this.handleAdd,
