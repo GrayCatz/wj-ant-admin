@@ -339,7 +339,7 @@ class TableList extends PureComponent {
               dataSource={data.list}
               pagination={paginationProps}
               renderItem={item => (
-                <List.Item  style={{ width: '180px', height: '150px', float: 'left', margin: '30px 20px' }}>
+                <List.Item  style={{ width: '182px', height: '150px', float: 'left', margin: '30px 20px' }}>
                   <Card
                     className={styles.card}
                     bodyStyle={{ padding: '5px', textAlign: 'center', height: '30px' }}
