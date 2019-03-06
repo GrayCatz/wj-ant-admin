@@ -3,8 +3,13 @@ import { Button, Card, Divider, Dropdown, Icon, Table } from 'antd';
 import styles from '../brand/TableList.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import Filter from './Filter';
+import EditForm from './EditForm';
 
 class MasterList extends React.Component {
+
+  state = {
+    editVisible: false,
+  };
 
   data = [
     {
@@ -59,19 +64,32 @@ class MasterList extends React.Component {
     },
   ];
 
+  setEditVisible = (editVisible) => {
+    this.setState({
+      editVisible,
+    });
+  }
+
   render() {
 
+    const parentMethods = {
+      setEditVisible: this.setEditVisible,
+    };
     return (
       <PageHeaderWrapper title="账号管理">
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <Filter/>
+            <Filter {...parentMethods}/>
             <Table
               rowKey="id"
               columns={this.columns}
               dataSource={this.data}/>
           </div>
         </Card>
+        <EditForm
+          {...parentMethods}
+          visible={this.state.editVisible}
+        />
       </PageHeaderWrapper>);
   }
 

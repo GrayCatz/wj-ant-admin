@@ -59,7 +59,7 @@ class Filter extends React.Component {
       <div>
         <div className={styles.tableListForm}>{this.renderForm()}</div>
         <div className={styles.tableListOperator}>
-          <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
+          <Button icon="plus" type="primary" onClick={() =>{ this.props.setEditVisible(true)} }>
             新建
           </Button>
         </div>
