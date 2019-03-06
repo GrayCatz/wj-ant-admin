@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import {Button, Card, Col, Dropdown, Form, Icon, Input, Modal, Row, Select, Table } from 'antd';
+import { Button, Card, Col, Divider, Dropdown, Form, Icon, Input, Modal, Row, Select, Table } from 'antd';
 
 import styles from '../brand/TableList.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -9,11 +9,42 @@ const Option = Select.Option;
 const TextArea = Input.TextArea;
 
 @Form.create()
-class EditForm extends React.Component {
+class Permissions extends React.Component {
 
-  state={
-    loading :false
-  }
+  state = {
+    loading: false,
+  };
+
+  data = [
+    {
+      id: 1,
+      name: '鉴别时',
+      status: '已选择',
+    },
+  ];
+
+  columns = [
+    {
+      title: '权限名',
+      dataIndex: 'name',
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+    },
+    {
+      title: '操作',
+      render: (text, record) => (
+        <div>
+          <Fragment>
+            <a onClick={() => this.setPermissionsVisible(true)}>权限设置</a>
+          </Fragment>
+        </div>
+
+
+      ),
+    },
+  ];
 
   formItems = [
     {
@@ -30,7 +61,7 @@ class EditForm extends React.Component {
   formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 5 },
+      sm: { span: 8 },
     },
     wrapperCol: {
       xs: { span: 24 },
@@ -38,13 +69,13 @@ class EditForm extends React.Component {
     },
   };
 
-  handleOk=()=>{
-    this.props.setEditVisible(false);
-  }
+  handleOk = () => {
+    this.props.setPermissionsVisible(false);
+  };
 
-  handleCancel=()=>{
-    this.props.setEditVisible(false);
-  }
+  handleCancel = () => {
+    this.props.setPermissionsVisible(false);
+  };
 
 
   renderForm() {
@@ -64,12 +95,10 @@ class EditForm extends React.Component {
               // required: true, message: 'Please input your E-mail!',
             }],
           })(
-            <Input />
+            <Input/>,
           )}
         </Form.Item>
-        <Button onClick={()=>{
-          this.props.setPermissionsVisible(true)
-        }}>权限设置</Button>
+
         <Form.Item
           label="权限"
         >
@@ -80,9 +109,10 @@ class EditForm extends React.Component {
               // required: true, message: 'Please input your E-mail!',
             }],
           })(
-            <Input disabled={true}/>
+            <Input/>,
           )}
         </Form.Item>
+
       </Form>
     );
   }
@@ -93,7 +123,7 @@ class EditForm extends React.Component {
       <div>
         <Modal
           visible={this.props.visible}
-          title="创建用户"
+          title="权限设置"
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={[
@@ -103,11 +133,14 @@ class EditForm extends React.Component {
             </Button>,
           ]}
         >
-          {this.renderForm()}
+          <Table
+            rowKey="id"
+            columns={this.columns}
+            dataSource={this.data}/>
         </Modal>
       </div>);
   }
 
 }
 
-export default EditForm;
+export default Permissions;

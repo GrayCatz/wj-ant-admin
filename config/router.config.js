@@ -26,25 +26,25 @@ export default [
       {
         path: '/image',
         name: 'image',
-        icon: 'dashboard',
+        icon: 'fund',
         component: './image/ImageList.js',
       },
       {
         path: '/category',
         name: 'category',
-        icon: 'dashboard',
+        icon: 'profile',
         component: './category/CategoryList',
       },
       {
         path: '/brand',
         name: 'brand',
-        icon: 'dashboard',
+        icon: 'slack',
         component: './brand/BrandList',
       },
       {
         path: '/product',
         name: 'product',
-        icon: 'dashboard',
+        icon: 'appstore',
         routes: [
           {
             path: '/product/list',
@@ -61,43 +61,10 @@ export default [
           },
         ],
       },
-      // {
-      //   path: '/product/detail/:id',
-      //   name: 'detail',
-      //   icon: 'profile',
-      //   component: './product/ProductProfile.js',
-      // },
-      // {
-      //   path: '/appraisal',
-      //   name: 'appraisal',
-      //   icon: 'dashboard',
-      //   component: './appraisal/AppraisalList',
-      //   routes: [
-      //     {
-      //       path: '/appraisal/detail/:id',
-      //       name: 'detail',
-      //       hideInMenu: true,
-      //       component: './appraisal/BasicProfile.js',
-      //     },
-      //   ],
-      // },
-      // {
-      //   path: '/appraisal',
-      //   name: 'appraisal',
-      //   icon: 'dashboard',
-      //   component: './appraisal/AppraisalList',
-      // },
-      // {
-      //   path: '/appraisal/detail/:id',
-      //   name: 'detail',
-      //   icon: 'profile',
-      //   component: './appraisal/BasicProfile.js',
-      // },
-
       {
         path: '/appraisal',
         name: 'appraisal',
-        icon: 'dashboard',
+        icon: 'file-protect',
         routes: [
           {
             path: '/appraisal/list',
@@ -117,13 +84,13 @@ export default [
       {
         path: '/master',
         name: 'master',
-        icon: 'dashboard',
+        icon: 'smile',
         component: './Master/MasterList',
       },
       {
         path: '/role',
         name: 'role',
-        icon: 'dashboard',
+        icon: 'user',
         component: './Role/List',
 
       },

@@ -47,11 +47,11 @@ class MasterList extends React.Component {
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
-            <a onClick={() => this.handleDelete(true, record)}>详情</a>
+            <a onClick={() => this.setEditVisible(true)}>详情</a>
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
-            <a onClick={() => this.handleDelete(true, record)}>编辑</a>
+            <a onClick={() => this.setEditVisible(true)}>编辑</a>
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>

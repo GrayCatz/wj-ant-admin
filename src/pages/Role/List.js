@@ -4,11 +4,13 @@ import styles from '../brand/TableList.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import Filter from './Filter';
 import EditForm from './EditForm';
+import Permissions from './Permissions';
 
 class List extends React.Component {
 
   state = {
     editVisible: false,
+    permissionsVisible: false,
   };
 
   data = [
@@ -33,15 +35,15 @@ class List extends React.Component {
       render: (text, record) => (
         <div>
           <Fragment>
-            <a onClick={() => this.handleDelete(true, record)}>权限设置</a>
+            <a onClick={() => this.setPermissionsVisible(true)}>权限设置</a>
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
-            <a onClick={() => this.handleDelete(true, record)}>详情</a>
+            <a onClick={() => this.setEditVisible(true)}>详情</a>
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
-            <a onClick={() => this.handleDelete(true, record)}>编辑</a>
+            <a onClick={() => this.setEditVisible(true)}>编辑</a>
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
@@ -60,10 +62,16 @@ class List extends React.Component {
     });
   };
 
+  setPermissionsVisible = (permissionsVisible) => {
+    this.setState({
+      permissionsVisible,
+    });
+  };
   render() {
 
     const parentMethods = {
       setEditVisible: this.setEditVisible,
+      setPermissionsVisible: this.setPermissionsVisible,
     };
     return (
       <PageHeaderWrapper title="角色管理">
@@ -79,6 +87,10 @@ class List extends React.Component {
         <EditForm
           {...parentMethods}
           visible={this.state.editVisible}
+        />
+        <Permissions
+          {...parentMethods}
+          visible={this.state.permissionsVisible}
         />
       </PageHeaderWrapper>);
   }
