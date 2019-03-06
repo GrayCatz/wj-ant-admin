@@ -2,6 +2,7 @@ export default {
   'menu.brand': '品牌',
   'menu.category': '类别',
   'menu.master': '账号管理',
+  'menu.role': '角色管理',
   'menu.product': '产品',
   'menu.product.list': '产品列表',
   'menu.product.detail': '产品详情',

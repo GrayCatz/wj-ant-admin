@@ -120,6 +120,13 @@ export default [
         icon: 'dashboard',
         component: './Master/MasterList',
       },
+      {
+        path: '/role',
+        name: 'role',
+        icon: 'dashboard',
+        component: './Role/List',
+
+      },
       // {
       //   path: '/appraisal/detail/:id',
       //   name: 'basic',
