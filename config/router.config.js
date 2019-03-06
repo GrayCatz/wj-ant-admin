@@ -114,6 +114,12 @@ export default [
           },
         ],
       },
+      {
+        path: '/master',
+        name: 'master',
+        icon: 'dashboard',
+        component: './Master/MasterList',
+      },
       // {
       //   path: '/appraisal/detail/:id',
       //   name: 'basic',
