@@ -84,12 +84,12 @@ class ProductImageList extends Component {
     this.state.dataSource = dataSource;
     return (
       <div>
-        <div className={styles.title} style={{ paddingLeft: '20px'}}>{this.props.type == 'REQUIRED' ? '必填' : '选填'}
+        <div className={styles.title} style={{ paddingLeft: '20px' }}>{this.props.type == 'REQUIRED' ? '必填' : '选填'}
           <Button type="primary"
                   shape="circle" icon="plus"
-                  style={{ marginLeft:"20px" }}
+                  style={{ marginLeft: '20px' }}
                   size="small"
-                  onClick={() => this.handleNameFormVisible(true)}/>
+                  onClick={() => this.handleAdd({ name: '' })}/>
           <NameForm visible={this.state.nameFormVisible}
                     handleModalVisible={this.handleNameFormVisible}
                     handleAdd={this.handleAdd}
@@ -122,7 +122,13 @@ class ProductImageList extends Component {
                   }}
                 >
                   <div
-                    style={{ lineHeight: '35px', fontWeight: 'bold', fontSize: '18px', cursor: 'pointer' }}
+                    style={{
+                      lineHeight: '35px',
+                      fontWeight: 'bold',
+                      fontSize: '18px',
+                      cursor: 'pointer',
+                      height: '35px',
+                    }}
                     onClick={() => this.handleNameFormVisible(true, item)}
                   >{item.name}</div>
                   <div style={{ cursor: 'pointer', position: 'absolute', right: 15, top: 10 }}><Icon type="close"
@@ -138,7 +144,7 @@ class ProductImageList extends Component {
                         }}/>}
                   >
                     <Card.Meta
-                      title="鉴别图"
+                      title="鉴别图标"
                     />
                   </Card>
                   <Card hoverable

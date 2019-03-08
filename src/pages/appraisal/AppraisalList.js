@@ -93,14 +93,14 @@ class TableList extends PureComponent {
       title: '订单状态',
       dataIndex: 'status',
     },
-    {
-      title: '操作',
-      render: (text, record) => (
-        <Fragment>
-          <a onClick={() => this.handleDelete(true, record)}>删除</a>
-        </Fragment>
-      ),
-    },
+    // {
+    //   title: '操作',
+    //   render: (text, record) => (
+    //     <Fragment>
+    //       <a onClick={() => this.handleDelete(true, record)}>删除</a>
+    //     </Fragment>
+    //   ),
+    // },
   ];
 
   componentDidMount() {
