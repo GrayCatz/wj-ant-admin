@@ -4,11 +4,13 @@ import styles from '../brand/TableList.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import Filter from './Filter';
 import EditForm from './EditForm';
+import Brands from './Brands';
 
 class MasterList extends React.Component {
 
   state = {
     editVisible: false,
+    brandsVisible: false,
   };
 
   data = [
@@ -43,7 +45,7 @@ class MasterList extends React.Component {
       render: (text, record) => (
         <div>
           <Fragment>
-            <a onClick={() => this.handleDelete(true, record)}>鉴别品牌</a>
+            <a onClick={() => this.setBrandsVisible(true)}>鉴别品牌</a>
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
@@ -70,10 +72,19 @@ class MasterList extends React.Component {
     });
   }
 
+  setBrandsVisible = (brandsVisible) => {
+    this.setState({
+      brandsVisible,
+    });
+  }
+
+
+
   render() {
 
     const parentMethods = {
       setEditVisible: this.setEditVisible,
+      setBrandsVisible: this.setBrandsVisible,
     };
     return (
       <PageHeaderWrapper title="账号管理">
@@ -89,6 +100,10 @@ class MasterList extends React.Component {
         <EditForm
           {...parentMethods}
           visible={this.state.editVisible}
+        />
+        <Brands
+          {...parentMethods}
+          visible={this.state.brandsVisible}
         />
       </PageHeaderWrapper>);
   }
