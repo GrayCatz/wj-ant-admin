@@ -173,6 +173,7 @@ class Permissions extends React.Component {
     return (
       <div>
         <Modal
+          destroyOnClose
           zIndex={2}
           visible={this.props.visible}
           title="权限设置"

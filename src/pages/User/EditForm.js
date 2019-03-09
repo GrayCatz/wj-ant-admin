@@ -246,6 +246,7 @@ class EditForm extends React.Component {
     return (
       <div>
         <Modal
+          destroyOnClose
           visible={this.props.visible}
           title="创建用户"
           onOk={this.handleOk}

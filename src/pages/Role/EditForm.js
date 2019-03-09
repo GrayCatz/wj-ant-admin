@@ -114,6 +114,7 @@ class EditForm extends React.Component {
     return (
       <div>
         <Modal
+          destroyOnClose
           zIndex={1}
           visible={this.props.visible}
           title="创建用户"
