@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Badge, Button, Card, Col, Divider, List, Modal, Row } from 'antd';
 import DescriptionList from '@/components/DescriptionList';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import styles from '../Profile/AdvancedProfile.less';
 
 const { Description } = DescriptionList;
 
@@ -121,19 +122,39 @@ class BasicProfile extends Component {
       return obj;
     };
 
-    return (
-      <PageHeaderWrapper title="订单详情" loading={loading}>
-        <Card bordered={false}>
-          <DescriptionList size="large" title="订单信息" style={{ marginBottom: 32 }}>
-            <Description term="鉴定单号">{application.serial}</Description>
-            <Description term="创建人">{application.creator}</Description>
-            <Description term="创建时间">{application.createTime}</Description>
-            <Description term="状态">{application.status}</Description>
-            <Description term="鉴定结果">{application.result}</Description>
-          </DescriptionList>
-          <Divider style={{ marginBottom: 32 }}/>
+    const description = (
+      <DescriptionList className={styles.headerList} size="small" col="2" style={{fontSize:"16px",font:' 14px/1.5 "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;'}}>
+        <Description term="产品名">{application.product}</Description>
+        <Description term="创建时间">{application.createTime}</Description>
+        <Description term="品牌">{application.brand}</Description>
+        <Description term="创建人">{application.creator}</Description>
+        <Description term="类别">{application.category}</Description>
+        {/*<Description term="状态">{application.status}</Description>*/}
+        {/*<Description term="鉴定结果">{application.result}</Description>*/}
+      </DescriptionList>
+    );
 
-          <DescriptionList size="large" title="产品信息" style={{ marginBottom: 32 }}>
+    return (
+      <PageHeaderWrapper title={`鉴定单号：${application.serial}`}
+                         logo={
+                           <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />
+                         }
+                         content={description}
+                         loading={loading}>
+        <Card bordered={false}>
+          {/*<DescriptionList size="large" title="" style={{ marginBottom: 32 ,fontSize:"18px",fontWeight:"bold"}}>*/}
+            {/*<Description term="鉴定单号">{application.serial}</Description>*/}
+            {/*<Description term="创建人">{application.creator}</Description>*/}
+            {/*<Description term="创建时间">{application.createTime}</Description>*/}
+            {/*<Description term="状态">{application.status}</Description>*/}
+            {/*<Description term="鉴定结果">{application.result}</Description>*/}
+            {/*<Description term="品牌">{application.brand}</Description>*/}
+            {/*<Description term="类别">{application.category}</Description>*/}
+          {/*</DescriptionList>*/}
+          {/*<Divider style={{ marginBottom: 32 }}/>*/}
+
+          <DescriptionList size="large" title="产品示例图" style={{ marginBottom: 32 ,fontSize:"18px"}}>
+
             <Description term="">
               <Card hoverable
                     bodyStyle={{ padding: 0 }}
@@ -143,8 +164,6 @@ class BasicProfile extends Component {
                       this.showPreview(true, {name:'',url:application.productImage})
                     }}/>}/>
             </Description>
-            <Description term="品牌">{application.brand}</Description>
-            <Description term="类别">{application.category}</Description>
           </DescriptionList>
           <Divider style={{ marginBottom: 32 }}/>
 
