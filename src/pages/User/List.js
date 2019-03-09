@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Card, Divider, Table } from 'antd';
+import { Card, Divider, message, Table } from 'antd';
 import { connect } from 'dva';
 import styles from '../brand/TableList.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -48,22 +48,22 @@ class List extends React.Component {
     },
     {
       title: '操作',
-      render: (text, record) => (
+      render: (record) => (
         <div>
           <Fragment>
             <a onClick={() => this.setBrandsVisible(true)}>鉴别品牌</a>
           </Fragment>
-          <Divider type="vertical"/>
-          <Fragment>
-            <a onClick={() => this.setEditVisible(true)}>详情</a>
-          </Fragment>
+          {/*<Divider type="vertical"/>*/}
+          {/*<Fragment>*/}
+          {/*<a onClick={() => this.setEditVisible(true)}>详情</a>*/}
+          {/*</Fragment>*/}
           <Divider type="vertical"/>
           <Fragment>
             <a onClick={() => this.showEdit(true, record)}>编辑</a>
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
-            <a onClick={() => this.handleDelete(true, record)}>禁用</a>
+            <a onClick={() => this.updateStatus(record)}>{record.status === 'ENABLE' ? '禁用' : '启用'}</a>
           </Fragment>
         </div>
 
@@ -74,6 +74,7 @@ class List extends React.Component {
 
   componentDidMount() {
     this.search();
+    this.loadRoleList();
   }
 
   search = (params) => {
@@ -82,6 +83,12 @@ class List extends React.Component {
       payload: {
         ...params,
       },
+    });
+  };
+  loadRoleList = () => {
+    this.props.dispatch({
+      type: 'users/roles',
+      payload: {}
     });
   };
   detail = (id, callback) => {
@@ -93,6 +100,24 @@ class List extends React.Component {
       callback: callback,
     });
   };
+
+  updateStatus = ( record) => {
+    console.log(record.status)
+    console.log(record.status === 'ENABLE')
+    this.props.dispatch({
+      type: 'users/updateStatus',
+      payload: {
+        id: record.id,
+        status: record.status === 'ENABLE' ? 'DISABLE' : 'ENABLE',
+      },
+      callback: (item) => {
+        message.success('保存成功');
+        this.search();
+      },
+    });
+  };
+
+
   handleSave = (fields) => {
     this.props.dispatch({
       type: 'users/save',
@@ -101,6 +126,7 @@ class List extends React.Component {
         ...fields,
       },
       callback: (item) => {
+        message.success('保存成功');
         this.setState({
           editVisible: false,
           // current: item,
@@ -110,20 +136,19 @@ class List extends React.Component {
     });
   };
   showEdit = (visible, user) => {
-    if (visible) {
+    if (visible&&user.id) {
       this.detail(user.id, (item) => {
         this.setState({
           editVisible: visible,
           // current: item,
         });
       });
-    } else {
+    }else{
       this.setState({
-        editVisible: false,
+        editVisible: visible,
         // current: item,
       });
     }
-
   };
 
   showBrandEdit = (visible) => {
@@ -136,6 +161,7 @@ class List extends React.Component {
   render() {
 
     const parentMethods = {
+      search: this.search,
       handleSave: this.handleSave,
       showEdit: this.showEdit,
       showBrandEdit: this.showBrandEdit,
@@ -157,6 +183,7 @@ class List extends React.Component {
           {...parentMethods}
           visible={this.state.editVisible}
           current={this.props.users.current}
+          roles={this.props.users.roles}
         />
         <Brands
           {...parentMethods}

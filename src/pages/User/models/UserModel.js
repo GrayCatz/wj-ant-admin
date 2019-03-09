@@ -11,6 +11,7 @@ export default {
       pagination: {},
     },
     current: {},
+    roles: [],
   },
 
   effects: {
@@ -26,17 +27,25 @@ export default {
         },
       };
       yield put({
-        type: 'save',
-        payload:{
-          data
-        } ,
+        type: 'saveState',
+        payload: {
+          data,
+        },
+      });
+    },
+    * roles({ payload }, { call, put }) {
+      const response = yield call(request, Api.ROLE.LIST, payload);
+      yield put({
+        type: 'saveState',
+        payload: {
+          roles: response,
+        },
       });
     },
     * get({ payload, callback }, { call, put }) {
       const response = yield call(request, Api.USER.GET, payload, callback);
-      console.log(response)
       yield put({
-        type: 'save',
+        type: 'saveState',
         payload: {
           current: response,
         },
@@ -45,6 +54,9 @@ export default {
     * save({ payload, callback }, { call, put }) {
       const response = yield call(request, Api.USER.SAVE, payload, callback);
 
+    },
+    * updateStatus({ payload, callback }, { call, put }) {
+      const response = yield call(request, Api.USER.UPDATE_STATUS, payload, callback);
     },
     // * saveRole({ payload, callback }, { call, put }) {
     //   let role = {
@@ -77,11 +89,12 @@ export default {
   },
 
   reducers: {
-    save(state, action) {
+    saveState(state, action) {
       return {
         ...state,
-        data: action.payload.data?action.payload.data:state.data,
-        current: action.payload.current?action.payload.current:state.current,
+        data: action.payload.data ? action.payload.data : state.data,
+        current: action.payload.current ? action.payload.current : state.current,
+        roles: action.payload.roles ? action.payload.roles : state.roles,
       };
     },
     savePermission(state, action) {

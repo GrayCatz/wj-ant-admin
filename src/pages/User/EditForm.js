@@ -1,16 +1,49 @@
 import React from 'react';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import Avatar from './Avatar';
+import OSS from 'ali-oss';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
+
+// 实例化OSS Client,具体的参数可参文档配置项
+const client = new OSS({
+  region: 'oss-cn-shenzhen',
+  accessKeyId: 'LTAIavN8qvYKCn7A',
+  accessKeySecret: 'RTzP3aP5QSV0SqL9TMKlwWVp0wNP5G',
+  bucket: 'mz-dev-2',
+});
+
+async function put(file, callback) {
+  console.log(file);
+  try {
+    // object表示上传到OSS的名字，可自己定义
+    // file浏览器中需要上传的文件，支持HTML5 file 和 Blob类型
+    let r1 = await client.put(file.name, file);
+    console.log('put success: %j', r1);
+    let r2 = await client.get(file.name);
+    console.log('get success: %j', r2);
+    callback(r1.url);
+  } catch (e) {
+    console.error('error: %j', e);
+  }
+}
+
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
 
 @Form.create()
 class EditForm extends React.Component {
 
   state = {
     loading: false,
+    portrait: null,
+    portraitUrl: null,
     // current: {},
   };
 
@@ -37,10 +70,25 @@ class EditForm extends React.Component {
     // },
   };
 
+  componentWillReceiveProps() {
+    this.setState({
+      portrait: null,
+      portraitUrl: this.props.current.portrait,
+    });
+  }
+
   handleOk = () => {
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) return;
-      this.props.handleSave(fieldsValue);
+      if (this.state.portrait && this.state.portrait != null) {
+        put(this.state.portrait, (url) => {
+          fieldsValue.portrait = url;
+          this.props.handleSave(fieldsValue);
+        });
+      } else {
+        this.props.handleSave(fieldsValue);
+      }
+
     });
 
   };
@@ -49,15 +97,24 @@ class EditForm extends React.Component {
     this.props.showEdit(false);
   };
 
+  savePortrait = (file) => {
+    getBase64(file, imageUrl => this.setState({
+      portrait: file,
+      portraitUrl: imageUrl,
+    }));
+    console.log(file);
+  };
 
   renderForm() {
     const {
       form: { getFieldDecorator },
     } = this.props;
+
+    console.log("roles:",this.props.roles)
     return (
       <Form {...this.formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item
-          style={{display:"none"}}
+          style={{ display: 'none' }}
           label="id"
         >
           {getFieldDecorator('id', {
@@ -76,7 +133,10 @@ class EditForm extends React.Component {
               // required: true, message: 'Please input your E-mail!',
             }],
           })(
-            <Avatar url={this.props.current.portrait}/>,
+            <Avatar
+              url={this.state.portraitUrl}
+              // url={this.props.current.portrait}
+              savePortrait={this.savePortrait}/>,
           )}
         </Form.Item>
         <Form.Item
@@ -147,9 +207,9 @@ class EditForm extends React.Component {
             initialValue: this.props.current.roleId,
           })(
             <Select style={{ width: 120 }}>
-              <Option value="1">Jack</Option>
-              <Option value="2">Lucy</Option>
-              <Option value="3">yiminghe</Option>
+              {this.props.roles.map((item) =>
+                <Option value={String(item.id)}>{item.name}</Option>,
+              )}
             </Select>,
           )}
         </Form.Item>

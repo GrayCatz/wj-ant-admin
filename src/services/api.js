@@ -10,9 +10,11 @@ const Api = {
     GET: '/api/v1/user/get',
     SAVE: '/api/v1/user/save',
     REMOVE: '/api/v1/user/remove',
+    UPDATE_STATUS: '/api/v1/user/update_status',
 
   },
   ROLE: {
+    LIST: '/api/v1/role/list',
     PAGING: '/api/v1/role/paging',
     SAVE: '/api/v1/role/save',
     REMOVE: '/api/v1/role/remove',

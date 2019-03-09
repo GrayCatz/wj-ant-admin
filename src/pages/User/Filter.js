@@ -8,6 +8,28 @@ const FormItem = Form.Item;
 @Form.create()
 class Filter extends React.Component {
 
+  handleSearch=(e)=>{
+    e.preventDefault();
+    console.log(this.props)
+    this.props.form.validateFields((err, fieldsValue) => {
+      if (err) return;
+
+      // const values = {
+      //   ...fieldsValue,
+      //   updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
+      // };
+      //
+      // this.setState({
+      //   formValues: values,
+      // });
+      //
+      // dispatch({
+      //   type: PAGING,
+      //   payload: values,
+      // });
+      this.props.search(fieldsValue)
+    });
+  };
 
   renderForm() {
     const {
