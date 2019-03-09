@@ -2,9 +2,23 @@ import { stringify } from 'qs';
 import request from '@/utils/request';
 import md5 from 'md5';
 
-// const host = 'http://127.0.0.1:2003';
+const host = 'http://127.0.0.1:2003';
 
-const  host = "http://47.112.33.199:2003";
+const Api = {
+  ROLE: {
+    PAGING: '/api/v1/role/paging',
+    SAVE: '/api/v1/role/save',
+    REMOVE: '/api/v1/role/remove',
+
+  },
+  PERMISSION: {
+    PAGING: '/api/v1/permission/paging',
+
+  },
+};
+export default Api;
+
+// const  host = "http://47.112.33.199:2003";
 
 export async function login(params) {
   return request(

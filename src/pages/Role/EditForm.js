@@ -39,7 +39,12 @@ class EditForm extends React.Component {
   };
 
   handleOk=()=>{
-    this.props.setEditVisible(false);
+    this.props.form.validateFields((err, fieldsValue) => {
+      if (err) return;
+
+      this.props.handleSaveRole({...fieldsValue})
+    });
+
   }
 
   handleCancel=()=>{
@@ -57,28 +62,28 @@ class EditForm extends React.Component {
         <Form.Item
           label="角色名称"
         >
-          {getFieldDecorator('username', {
+          {getFieldDecorator('name', {
             rules: [{
               // type: 'email', message: 'The input is not valid E-mail!',
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
+            initialValue:this.props.role.name
           })(
             <Input />
           )}
         </Form.Item>
-        <Button onClick={()=>{
-          this.props.setPermissionsVisible(true)
-        }}>权限设置</Button>
+        <Button onClick={()=>{this.props.setPermissionsVisible(true)}}>权限设置</Button>
         <Form.Item
           label="权限"
         >
-          {getFieldDecorator('phone', {
+          {getFieldDecorator('permission', {
             rules: [{
               // type: 'email', message: 'The input is not valid E-mail!',
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
+            initialValue:this.props.role.permission
           })(
             <Input disabled={true}/>
           )}
@@ -92,6 +97,7 @@ class EditForm extends React.Component {
     return (
       <div>
         <Modal
+          zIndex={1}
           visible={this.props.visible}
           title="创建用户"
           onOk={this.handleOk}

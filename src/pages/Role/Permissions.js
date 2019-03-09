@@ -30,21 +30,25 @@ class Permissions extends React.Component {
     },
     {
       title: '状态',
-      dataIndex: 'status',
-    },
-    {
-      title: '操作',
-      render: (text, record) => (
-        <div>
-          <Fragment>
-            <a onClick={() => this.setPermissionsVisible(true)}>权限设置</a>
-          </Fragment>
-        </div>
-
-
-      ),
-    },
-  ];
+      dataIndex: 'selected',
+      // render:(field,item )=> field=="TRUE"?"已选择":"未选择"
+      render: (field, item) => this.props.role.permissions.indexOf(item.id) !== -1 ? '已选择' : '未选择',
+    }
+    ,
+// {
+//   title: '操作',
+//   render: (text, record) => (
+//     <div>
+//       <Fragment>
+//         <a onClick={() => this.setPermissionsVisible(true)}>权限设置</a>
+//       </Fragment>
+//     </div>
+//
+//
+//   ),
+// },
+  ]
+  ;
 
   formItems = [
     {
@@ -118,25 +122,44 @@ class Permissions extends React.Component {
   }
 
   render() {
-
+    const rowSelection = {
+      fixed: false,
+      selectedRowKeys: this.props.role.permissions,
+      onSelect: (record, selected, selectedRows, nativeEvent) => {
+        this.props.handlePermissionChange(record,selected)
+      },
+      onSelectAll: (selected, selectedRows, changeRows) => {
+        this.props.handlePermissionChangeAll(selectedRows,selected)
+      },
+      onChange: (selectedRowKeys, selectedRows) => {
+        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      },
+      getCheckboxProps: record => ({
+        disabled: record.name === 'Disabled User', // Column configuration not to be checked
+        name: record.name,
+      }),
+    };
     return (
       <div>
         <Modal
+          zIndex={2}
           visible={this.props.visible}
           title="权限设置"
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={[
             <Button key="back" onClick={this.handleCancel}>取消</Button>,
-            <Button key="submit" type="primary" loading={this.state.loading} onClick={this.handleOk}>
+            <Button key="submit" type="primary" loading={this.state.loading} onClick={()=>this.props.handleSaveRole()}>
               保存
             </Button>,
           ]}
         >
           <Table
             rowKey="id"
+            rowSelection={rowSelection}
             columns={this.columns}
-            dataSource={this.data}/>
+            dataSource={this.props.dataSource}
+          />
         </Modal>
       </div>);
   }
