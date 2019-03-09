@@ -96,7 +96,8 @@ class ProductProfile extends Component {
           console.log('callback');
           if (response.code == 1) {
             message.success('保存成功');
-            router.push(`/product/detail/${response.data}`);
+            // router.push(`/product/detail/${response.data}`);
+            router.push(`/product/list`);
             // const { dispatch, match } = this.props;
             // const { params } = match;
             // dispatch({
