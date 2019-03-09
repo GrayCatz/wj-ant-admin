@@ -2,16 +2,20 @@ import request from '@/services/request';
 import Api from '../../../services/api';
 import { message } from 'antd';
 
+let getIds = (permissions) => {
+  let ids = [];
+  for (const index in permissions ){
+    ids.push(permissions[index].id);
+  }
+  return ids;
+};
+
 export default {
   namespace: 'role',
 
   state: {
     data: {
-      list: [{
-        id: 1,
-        name: '鉴别时',
-        phone: '图库，订单管理，产品管理',
-      }],
+      list: [],
       pagination: {},
     },
     permission: {
@@ -37,7 +41,12 @@ export default {
       });
     },
     * saveRole({ payload, callback }, { call, put }) {
-      const response = yield call(request, Api.ROLE.SAVE, payload, callback);
+      let  role = {
+        ...payload
+      }
+      role.permissions=getIds(payload.permissions)
+      // const response = yield call(request, Api.ROLE.SAVE, {data:JSON.stringify(payload)}, callback);
+      const response = yield call(request, Api.ROLE.SAVE, role, callback);
 
     },
     * remove({ payload, callback }, { call, put }) {

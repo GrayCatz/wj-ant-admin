@@ -23,6 +23,14 @@ class Permissions extends React.Component {
     },
   ];
 
+  hasSelect(item) {
+    for (const index in this.props.role.permissions) {
+      // console.log(this.props.role.permissions[index].id === item.id);
+      if (this.props.role.permissions[index].id === item.id) return true;
+    }
+    return false;
+  }
+
   columns = [
     {
       title: '权限名',
@@ -32,7 +40,7 @@ class Permissions extends React.Component {
       title: '状态',
       dataIndex: 'selected',
       // render:(field,item )=> field=="TRUE"?"已选择":"未选择"
-      render: (field, item) => this.props.role.permissions.indexOf(item.id) !== -1 ? '已选择' : '未选择',
+      render: (field, item) => this.hasSelect(item) ? '已选择' : '未选择',
     }
     ,
 // {
@@ -78,9 +86,16 @@ class Permissions extends React.Component {
   };
 
   handleCancel = () => {
-    this.props.setPermissionsVisible(false);
+    this.props.showPermissionEdit(false);
   };
 
+  getIds = () => {
+    let ids = [];
+    for (const index in this.props.role.permissions) {
+      ids.push(this.props.role.permissions[index].id);
+    }
+    return ids;
+  };
 
   renderForm() {
     const {
@@ -121,23 +136,39 @@ class Permissions extends React.Component {
     );
   }
 
+  convertToPermissions = (selectedRows) => {
+    let permissions = [];
+    for (const i in selectedRows) {
+      for (const j in this.props.dataSource) {
+        if (selectedRows[i].id === this.props.dataSource[j].id) {
+          permissions.push(this.props.dataSource[j]);
+        }
+      }
+    }
+    console.log("permissions:",permissions)
+    return permissions;
+  };
+
   render() {
     const rowSelection = {
       fixed: false,
-      selectedRowKeys: this.props.role.permissions,
+      selectedRowKeys: this.getIds(this.props.role.permissions),
       onSelect: (record, selected, selectedRows, nativeEvent) => {
-        this.props.handlePermissionChange(record,selected)
+        // this.props.handlePermissionChange(record,selected)
+        this.props.handlePermissionChangeAll(this.convertToPermissions(selectedRows));
+        // this.props.handlePermissionChangeAll(selectedRows,selected)
       },
       onSelectAll: (selected, selectedRows, changeRows) => {
-        this.props.handlePermissionChangeAll(selectedRows,selected)
+        // this.props.handlePermissionChangeAll(selectedRows,selected)
+        this.props.handlePermissionChangeAll(this.convertToPermissions(selectedRows));
       },
-      onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      },
-      getCheckboxProps: record => ({
-        disabled: record.name === 'Disabled User', // Column configuration not to be checked
-        name: record.name,
-      }),
+      // onChange: (selectedRowKeys, selectedRows) => {
+      //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      // },
+      // getCheckboxProps: record => ({
+      //   disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      //   name: record.name,
+      // }),
     };
     return (
       <div>
@@ -149,7 +180,8 @@ class Permissions extends React.Component {
           onCancel={this.handleCancel}
           footer={[
             <Button key="back" onClick={this.handleCancel}>取消</Button>,
-            <Button key="submit" type="primary" loading={this.state.loading} onClick={()=>this.props.handleSaveRole()}>
+            <Button key="submit" type="primary" loading={this.state.loading}
+                    onClick={() => this.props.needSave ? this.props.handleSaveRole(this.props.role) : this.props.showPermissionEdit(false)}>
               保存
             </Button>,
           ]}

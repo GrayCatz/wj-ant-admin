@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import {Button, Card, Col, Dropdown, Form, Icon, Input, Modal, Row, Select, Table } from 'antd';
+import { Button, Card, Col, Dropdown, Form, Icon, Input, Modal, Row, Select, Table } from 'antd';
 
 import styles from '../brand/TableList.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -11,9 +11,9 @@ const TextArea = Input.TextArea;
 @Form.create()
 class EditForm extends React.Component {
 
-  state={
-    loading :false
-  }
+  state = {
+    loading: false,
+  };
 
   formItems = [
     {
@@ -38,19 +38,29 @@ class EditForm extends React.Component {
     },
   };
 
-  handleOk=()=>{
+  handleOk = () => {
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) return;
-
-      this.props.handleSaveRole({...fieldsValue})
+      let entity = this.props.role;
+      entity.name = fieldsValue.name;
+      this.props.handleSaveRole(entity);
     });
 
-  }
+  };
 
-  handleCancel=()=>{
-    this.props.setEditVisible(false);
-  }
+  handleCancel = () => {
+    this.props.showEdit(false);
+  };
 
+  getPermission = () => {
+    if (!this.props.role.permissions) return;
+    let text = '';
+    console.log(this.props.role.permissions);
+    this.props.role.permissions.map((item) => {
+      text = text + item.name + ';';
+    });
+    return text;
+  };
 
   renderForm() {
     const {
@@ -68,12 +78,19 @@ class EditForm extends React.Component {
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
-            initialValue:this.props.role.name
+            initialValue: this.props.role.name,
           })(
-            <Input />
+            <Input/>,
           )}
         </Form.Item>
-        <Button onClick={()=>{this.props.setPermissionsVisible(true)}}>权限设置</Button>
+        <Button
+          style={{
+            marginLeft: '100px',
+            marginBottom: ' 20px',
+          }}
+          onClick={() => {
+            this.props.showPermissionEdit(true, this.props.role, false);
+          }}>权限设置</Button>
         <Form.Item
           label="权限"
         >
@@ -83,9 +100,9 @@ class EditForm extends React.Component {
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
-            initialValue:this.props.role.permission
+            initialValue: this.getPermission(),
           })(
-            <Input disabled={true}/>
+            <Input disabled={true}/>,
           )}
         </Form.Item>
       </Form>

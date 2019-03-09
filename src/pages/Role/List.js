@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
-import { Button, Card, Divider, Dropdown, Icon, message, Table,Modal } from 'antd';
+import { Button, Card, Divider, Dropdown, Icon, message, Table, Modal } from 'antd';
 import styles from '../brand/TableList.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import Filter from './Filter';
 import EditForm from './EditForm';
 import Permissions from './Permissions';
 import { connect } from 'dva';
+
 const confirm = Modal.confirm;
 
 @connect(({ role, loading }) => ({
@@ -16,21 +17,17 @@ class List extends React.Component {
 
   state = {
     editVisible: false,
-    permissionsVisible: false,
-    // role: {},
-    role: {
-      // id: 3,
-      // name: '游客',
-      // permission: '账号;类别;图库',
-    },
+    permissionEditVisible: false,
+    needSave: false,
+    role: {},
   };
 
   data = [
-    {
-      id: 1,
-      name: '鉴别时',
-      phone: '图库，订单管理，产品管理',
-    },
+    // {
+    //   id: 1,
+    //   name: '鉴别时',
+    //   phone: '图库，订单管理，产品管理',
+    // },
   ];
 
   columns = [
@@ -40,18 +37,24 @@ class List extends React.Component {
     },
     {
       title: '权限',
-      dataIndex: 'permission',
+      dataIndex: 'permissions',
+      render:(text,record)=>{
+        // console.log(text,record)
+        return text.map((item)=>{
+            return item.name+";";
+          })
+      }
     },
     {
       title: '操作',
       render: (text, record) => (
         <div>
           <Fragment>
-            <a onClick={() => this.setPermissions(record)}>权限设置</a>
+            <a onClick={() => this.showPermissionEdit(true, record, true)}>权限设置</a>
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
-            <a onClick={() => this.setEditVisible(true, record)}>编辑</a>
+            <a onClick={() => this.showEdit(true, false, record)}>编辑</a>
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
@@ -77,17 +80,42 @@ class List extends React.Component {
     });
   };
 
-  setPermissions = (role) => {
+  showPermissionEdit = (visible, role, needSave) => {
+    if (visible) {
+      this.props.dispatch({
+        type: 'role/permissions',
+        payload: {
+          roleId: this.state.role.id,
+        },
+      });
+    }
     this.setState({
-      role,
+      permissionEditVisible: visible,
+      needSave,
     });
-    this.setPermissionsVisible(true);
+    if (role) {
+      this.setState({
+        role,
+      });
+    }
+    if (visible && needSave) {
+      this.setState({
+        needSave,
+      });
+    }
+
+
   };
 
-  setEditVisible = (editVisible, role) => {
+  showEdit = (visible, create, role) => {
     this.setState({
-      editVisible,
+      editVisible: visible,
     });
+    if (create) {
+      this.setState({
+        role: {},
+      });
+    }
     if (role) {
       this.setState({
         role,
@@ -97,40 +125,17 @@ class List extends React.Component {
   };
 
 
-  setPermissionsVisible = (permissionsVisible) => {
-    // if(permissionsVisible){
-    //   this.props.dispatch({
-    //     type:"role/permissions",
-    //     payload: {
-    //
-    //     }
-    //   })
-    // }
-    if (permissionsVisible) {
-      this.props.dispatch({
-        type: 'role/permissions',
-        payload: {
-          roleId: this.state.role.id,
-        },
-      });
-    }
-    this.setState({
-      permissionsVisible,
-    });
-  };
-
   handleSaveRole = (role) => {
     this.props.dispatch({
       type: 'role/saveRole',
-      payload: role?role:this.state.role,
+      payload: role,
       callback: () => {
         message.success('保存成功');
-        this.setPermissionsVisible(false);
-        this.setEditVisible(false);
+        this.showPermissionEdit(false);
+        this.showEdit(false);
         this.props.dispatch({
           type: 'role/paging',
-          payload: {
-          },
+          payload: {},
         });
       },
     });
@@ -140,7 +145,7 @@ class List extends React.Component {
     confirm({
       title: '确定删除该角色？',
       // content: 'When clicked the OK button, this dialog will be closed after 1 second',
-      onOk:()=> {
+      onOk: () => {
         this.props.dispatch({
           type: 'role/remove',
           payload: {
@@ -158,33 +163,38 @@ class List extends React.Component {
         //   setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
         // }).catch(() => console.log('Oops errors!'));
       },
-      onCancel() {},
+      onCancel() {
+      },
     });
 
   };
 
 
-  handlePermissionChangeAll = (rows, selected) => {
-    if (selected) {
-      let arr = [];
-      for (const index in rows) {
-        arr.push(rows[index].id);
-      }
-      this.state.role.permissions = arr;
-    } else {
-      this.state.role.permissions = [];
-    }
+  handlePermissionChangeAll = (permissions) => {
+    // if (selected) {
+    //   let arr = [];
+    //   for (const index in rows) {
+    //     arr.push(rows[index].id);
+    //   }
+    //   this.state.role.permissions = arr;
+    // } else {
+    //   this.state.role.permissions = [];
+    // }
+    this.state.role.permissions = permissions;
     this.setState({
       role: this.state.role,
     });
-    console.log(this.state.role);
+    // console.log(this.state.role);
   };
+
   handlePermissionChange = (item, selected) => {
     if (selected) {
       this.state.role.permissions.push(item.id);
+      // this.state.permission += `;${item.name}`;
     } else {
       this.state.role.permissions.splice(this.state.role.permissions.indexOf(item.id), 1);
     }
+
     this.setState({
       role: this.state.role,
     });
@@ -194,11 +204,11 @@ class List extends React.Component {
   render() {
     const parentMethods = {
       search: this.search,
-      setPermissions: this.setPermissions,
+      showPermissionEdit: this.showPermissionEdit,
       handleSaveRole: this.handleSaveRole,
       handlePermissionChangeAll: this.handlePermissionChangeAll,
       handlePermissionChange: this.handlePermissionChange,
-      setEditVisible: this.setEditVisible,
+      showEdit: this.showEdit,
       setPermissionsVisible: this.setPermissionsVisible,
     };
     return (
@@ -215,9 +225,10 @@ class List extends React.Component {
 
         <Permissions
           {...parentMethods}
-          visible={this.state.permissionsVisible}
+          visible={this.state.permissionEditVisible}
           dataSource={this.props.role.permission.list}
           role={this.state.role}
+          needSave={this.state.needSave}
         />
         <EditForm
           {...parentMethods}
