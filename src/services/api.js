@@ -2,7 +2,7 @@ import { stringify } from 'qs';
 import request from '@/utils/request';
 import md5 from 'md5';
 
-const host = 'http://127.0.0.1:2003';
+// const host = 'http://127.0.0.1:2003';
 
 const Api = {
   USER: {
@@ -27,7 +27,7 @@ const Api = {
 };
 export default Api;
 
-// const  host = "http://47.112.33.199:2003";
+const  host = "http://47.112.33.199:2003";
 
 export async function login(params) {
   return request(

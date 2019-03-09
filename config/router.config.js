@@ -81,19 +81,19 @@ export default [
           },
         ],
       },
-      {
-        path: '/master',
-        name: 'master',
-        icon: 'smile',
-        component: './User/List',
-      },
-      {
-        path: '/role',
-        name: 'role',
-        icon: 'user',
-        component: './Role/List',
-
-      },
+      // {
+      //   path: '/master',
+      //   name: 'master',
+      //   icon: 'smile',
+      //   component: './User/List',
+      // },
+      // {
+      //   path: '/role',
+      //   name: 'role',
+      //   icon: 'user',
+      //   component: './Role/List',
+      //
+      // },
       // {
       //   path: '/appraisal/detail/:id',
       //   name: 'basic',
