@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Badge, Button, Card, Col, Divider, List, Row } from 'antd';
+import { Badge, Button, Card, Col, Divider, List, Modal, Row } from 'antd';
 import DescriptionList from '@/components/DescriptionList';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
@@ -45,6 +45,11 @@ const progressColumns = [
   loading: loading.effects['detail/fetchBasic'],
 }))
 class BasicProfile extends Component {
+
+  state={
+    previewVisible: false,
+    previewItem: null,
+  }
   componentDidMount() {
     const { dispatch, match } = this.props;
     const { params } = match;
@@ -57,6 +62,17 @@ class BasicProfile extends Component {
       },
     });
   }
+
+  showPreview = (previewVisible, previewItem) => {
+    this.setState({
+      previewVisible,
+    });
+    if(previewItem){
+      this.setState({
+        previewItem,
+      });
+    }
+  };
 
   handleResult(id, result) {
     const { dispatch, match } = this.props;
@@ -124,6 +140,7 @@ class BasicProfile extends Component {
                     style={{ width: '200px', margin: '5%' }}
                     cover={<img alt="example" src={application.productImage}
                                 style={{ height: '180px' }} onClick={() => {
+                      this.showPreview(true, {name:'',url:application.productImage})
                     }}/>}/>
             </Description>
             <Description term="品牌">{application.brand}</Description>
@@ -140,7 +157,9 @@ class BasicProfile extends Component {
                   <Card hoverable
                         bodyStyle={{ padding: 0 }}
                         cover={<img alt="example" src={item.image}
-                                    style={{ height: '180px' }}/>}/>
+                                    style={{ height: '180px' }} onClick={() => {
+                          this.showPreview(true, {name:item.name,url:item.image})
+                        }}/>}/>
                 </List.Item>
               )}
             />
@@ -154,7 +173,9 @@ class BasicProfile extends Component {
                   <Card hoverable
                         bodyStyle={{ padding: 0 }}
                         cover={<img alt="example" src={item.image}
-                                    style={{ height: '180px' }}/>}/>
+                                    style={{ height: '180px' }} onClick={() => {
+                          this.showPreview(true, {name:item.name,url:item.image})
+                        }}/>}/>
                 </List.Item>
               )}
             />
@@ -182,6 +203,9 @@ class BasicProfile extends Component {
             </Row>
           </div>
         </Card>
+        <Modal title={this.state.previewItem==null?"":this.state.previewItem.name} visible={this.state.previewVisible} footer={null} onCancel={() => this.showPreview(false)}>
+          <img alt="example" style={{ width: '100%' }} src={this.state.previewItem==null?"":this.state.previewItem.url}/>
+        </Modal>
       </PageHeaderWrapper>
     );
   }
