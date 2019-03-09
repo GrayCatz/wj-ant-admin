@@ -1,8 +1,5 @@
-import React, { Fragment } from 'react';
-import {Button, Card, Col, Dropdown, Form, Icon, Input, Modal, Row, Select, Table } from 'antd';
-
-import styles from '../brand/TableList.less';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import React from 'react';
+import { Button, Form, Input, Modal, Select } from 'antd';
 import Avatar from './Avatar';
 
 const FormItem = Form.Item;
@@ -12,9 +9,10 @@ const TextArea = Input.TextArea;
 @Form.create()
 class EditForm extends React.Component {
 
-  state={
-    loading :false
-  }
+  state = {
+    loading: false,
+    // current: {},
+  };
 
   formItems = [
     {
@@ -29,23 +27,27 @@ class EditForm extends React.Component {
   ];
 
   formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 7 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 },
-    },
+    // labelCol: {
+    //   xs: { span: 24 },
+    //   sm: { span: 7 },
+    // },
+    // wrapperCol: {
+    //   xs: { span: 24 },
+    //   sm: { span: 16 },
+    // },
   };
 
-  handleOk=()=>{
-    this.props.setEditVisible(false);
-  }
+  handleOk = () => {
+    this.props.form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      this.props.handleSave(fieldsValue);
+    });
 
-  handleCancel=()=>{
-    this.props.setEditVisible(false);
-  }
+  };
+
+  handleCancel = () => {
+    this.props.showEdit(false);
+  };
 
 
   renderForm() {
@@ -54,6 +56,16 @@ class EditForm extends React.Component {
     } = this.props;
     return (
       <Form {...this.formItemLayout} onSubmit={this.handleSubmit}>
+        <Form.Item
+          style={{display:"none"}}
+          label="id"
+        >
+          {getFieldDecorator('id', {
+            initialValue: this.props.current.id,
+          })(
+            <Input/>,
+          )}
+        </Form.Item>
         <Form.Item
           label="头像"
         >
@@ -64,7 +76,7 @@ class EditForm extends React.Component {
               // required: true, message: 'Please input your E-mail!',
             }],
           })(
-            <Avatar />
+            <Avatar url={this.props.current.portrait}/>,
           )}
         </Form.Item>
         <Form.Item
@@ -76,8 +88,9 @@ class EditForm extends React.Component {
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
+            initialValue: this.props.current.username,
           })(
-            <Input />
+            <Input/>,
           )}
         </Form.Item>
         <Form.Item
@@ -89,8 +102,9 @@ class EditForm extends React.Component {
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
+            initialValue: this.props.current.password,
           })(
-            <Input />
+            <Input/>,
           )}
         </Form.Item>
         <Form.Item
@@ -102,8 +116,9 @@ class EditForm extends React.Component {
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
+            initialValue: this.props.current.realName,
           })(
-            <Input />
+            <Input/>,
           )}
         </Form.Item>
         <Form.Item
@@ -115,39 +130,41 @@ class EditForm extends React.Component {
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
+            initialValue: this.props.current.phone,
           })(
-            <Input />
+            <Input/>,
           )}
         </Form.Item>
         <Form.Item
           label="角色"
         >
-          {getFieldDecorator('role', {
+          {getFieldDecorator('roleId', {
             rules: [{
               // type: 'email', message: 'The input is not valid E-mail!',
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
-            initialValue:"lucy",
+            initialValue: this.props.current.roleId,
           })(
             <Select style={{ width: 120 }}>
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="Yiminghe">yiminghe</Option>
-            </Select>
+              <Option value="1">Jack</Option>
+              <Option value="2">Lucy</Option>
+              <Option value="3">yiminghe</Option>
+            </Select>,
           )}
         </Form.Item>
         <Form.Item
           label="个人简介（可鉴别）"
         >
-          {getFieldDecorator('p0rofile', {
+          {getFieldDecorator('profile', {
             rules: [{
               // type: 'email', message: 'The input is not valid E-mail!',
             }, {
               // required: true, message: 'Please input your E-mail!',
             }],
+            initialValue: this.props.current.profile,
           })(
-            <TextArea />
+            <TextArea/>,
           )}
         </Form.Item>
         <Form.Item
@@ -155,8 +172,9 @@ class EditForm extends React.Component {
         >
           {getFieldDecorator('requirement', {
             rules: [],
+            initialValue: this.props.current.requirement,
           })(
-            <TextArea />
+            <TextArea/>,
           )}
         </Form.Item>
       </Form>

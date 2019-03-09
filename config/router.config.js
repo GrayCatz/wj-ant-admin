@@ -85,7 +85,7 @@ export default [
         path: '/master',
         name: 'master',
         icon: 'smile',
-        component: './Master/MasterList',
+        component: './User/List',
       },
       {
         path: '/role',

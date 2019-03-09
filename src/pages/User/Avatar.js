@@ -45,7 +45,9 @@ class Avatar extends React.Component {
         <Icon type={this.state.loading ? 'loading' : 'plus'} />
       </div>
     );
-    const imageUrl = this.state.imageUrl;
+    const imageUrl = this.props.url?this.props.url:this.state.imageUrl;
+    console.log("imageUrl:",this.props.url)
+
     return (
       <Upload
         name="avatar"

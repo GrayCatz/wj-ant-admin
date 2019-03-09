@@ -5,6 +5,13 @@ import md5 from 'md5';
 const host = 'http://127.0.0.1:2003';
 
 const Api = {
+  USER: {
+    PAGING: '/api/v1/user/paging',
+    GET: '/api/v1/user/get',
+    SAVE: '/api/v1/user/save',
+    REMOVE: '/api/v1/user/remove',
+
+  },
   ROLE: {
     PAGING: '/api/v1/role/paging',
     SAVE: '/api/v1/role/save',

@@ -1,16 +1,22 @@
 import React, { Fragment } from 'react';
-import { Button, Card, Divider, Dropdown, Icon, Table } from 'antd';
+import { Card, Divider, Table } from 'antd';
+import { connect } from 'dva';
 import styles from '../brand/TableList.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import Filter from './Filter';
 import EditForm from './EditForm';
 import Brands from './Brands';
 
-class MasterList extends React.Component {
+@connect(({ users, loading }) => ({
+  users,
+  loading: loading.models.users,
+}))
+class List extends React.Component {
 
   state = {
     editVisible: false,
     brandsVisible: false,
+    // current: {},
   };
 
   data = [
@@ -20,16 +26,16 @@ class MasterList extends React.Component {
       phone: '1858766909',
       profile: '迪奥，倩碧',
       requirement: '图片清晰',
+      title: '手机号',
     },
   ];
 
   columns = [
     {
       title: '用户名',
-      dataIndex: 'name',
+      dataIndex: 'username',
     },
     {
-      title: '手机号',
       dataIndex: 'phone',
     },
     {
@@ -53,7 +59,7 @@ class MasterList extends React.Component {
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
-            <a onClick={() => this.setEditVisible(true)}>编辑</a>
+            <a onClick={() => this.showEdit(true, record)}>编辑</a>
           </Fragment>
           <Divider type="vertical"/>
           <Fragment>
@@ -66,25 +72,73 @@ class MasterList extends React.Component {
     },
   ];
 
-  setEditVisible = (editVisible) => {
-    this.setState({
-      editVisible,
-    });
+  componentDidMount() {
+    this.search();
   }
 
-  setBrandsVisible = (brandsVisible) => {
-    this.setState({
-      brandsVisible,
+  search = (params) => {
+    this.props.dispatch({
+      type: 'users/paging',
+      payload: {
+        ...params,
+      },
     });
-  }
+  };
+  detail = (id, callback) => {
+    this.props.dispatch({
+      type: 'users/get',
+      payload: {
+        id: id,
+      },
+      callback: callback,
+    });
+  };
+  handleSave = (fields) => {
+    this.props.dispatch({
+      type: 'users/save',
+      payload: {
+        ...this.state.current,
+        ...fields,
+      },
+      callback: (item) => {
+        this.setState({
+          editVisible: false,
+          // current: item,
+        });
+        this.search();
+      },
+    });
+  };
+  showEdit = (visible, user) => {
+    if (visible) {
+      this.detail(user.id, (item) => {
+        this.setState({
+          editVisible: visible,
+          // current: item,
+        });
+      });
+    } else {
+      this.setState({
+        editVisible: false,
+        // current: item,
+      });
+    }
 
+  };
+
+  showBrandEdit = (visible) => {
+    this.setState({
+      brandsVisible: visible,
+    });
+  };
 
 
   render() {
 
     const parentMethods = {
-      setEditVisible: this.setEditVisible,
-      setBrandsVisible: this.setBrandsVisible,
+      handleSave: this.handleSave,
+      showEdit: this.showEdit,
+      showBrandEdit: this.showBrandEdit,
     };
     return (
       <PageHeaderWrapper title="账号管理">
@@ -94,20 +148,24 @@ class MasterList extends React.Component {
             <Table
               rowKey="id"
               columns={this.columns}
-              dataSource={this.data}/>
+              // dataSource={this.data}
+              dataSource={this.props.users.data.list}
+            />
           </div>
         </Card>
         <EditForm
           {...parentMethods}
           visible={this.state.editVisible}
+          current={this.props.users.current}
         />
         <Brands
           {...parentMethods}
           visible={this.state.brandsVisible}
         />
-      </PageHeaderWrapper>);
+      </PageHeaderWrapper>)
+      ;
   }
 
 }
 
-export default MasterList;
+export default List;

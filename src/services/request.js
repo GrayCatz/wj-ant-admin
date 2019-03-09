@@ -12,7 +12,7 @@ export default function request(URL, params,sCallback) {
 
     }
   }
-  console.log(paramsStr);
+  // console.log(paramsStr);
 
   let url = host + URL + '?' + paramsStr;
   let option = {

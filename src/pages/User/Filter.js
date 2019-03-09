@@ -1,26 +1,13 @@
-import React, { Fragment } from 'react';
-import { Button, Card, Col, Dropdown, Form, Icon, Input, Row, Table } from 'antd';
+import React from 'react';
+import { Button, Col, Form, Input, Row } from 'antd';
 
 import styles from '../brand/TableList.less';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 const FormItem = Form.Item;
 
 @Form.create()
 class Filter extends React.Component {
 
-
-  formItems = [
-    {
-      label: '用户名',
-      key: 'username',
-    },
-    {
-      label: '手机号',
-      key: 'phone',
-    },
-
-  ];
 
   renderForm() {
     const {
@@ -29,15 +16,16 @@ class Filter extends React.Component {
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          {this.formItems.map((item)=>{
-            return (
-              <Col md={8} sm={24}>
-                <FormItem label={item.label}>
-                  {getFieldDecorator(item.key)(<Input placeholder="请输入"/>)}
-                </FormItem>
-              </Col>
-            )
-          })}
+          <Col md={8} sm={24}>
+            <FormItem label="用户名">
+              {getFieldDecorator('username')(<Input placeholder="请输入"/>)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="手机号">
+              {getFieldDecorator('phone')(<Input placeholder="请输入"/>)}
+            </FormItem>
+          </Col>
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
@@ -59,7 +47,9 @@ class Filter extends React.Component {
       <div>
         <div className={styles.tableListForm}>{this.renderForm()}</div>
         <div className={styles.tableListOperator}>
-          <Button icon="plus" type="primary" onClick={() =>{ this.props.setEditVisible(true)} }>
+          <Button icon="plus" type="primary" onClick={() => {
+            this.props.showEdit(true, {});
+          }}>
             新建
           </Button>
         </div>
