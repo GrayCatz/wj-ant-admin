@@ -123,7 +123,7 @@ class BasicProfile extends Component {
     };
 
     const description = (
-      <DescriptionList className={styles.headerList} size="small" col="2" style={{fontSize:"16px",font:' 14px/1.5 "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;'}}>
+      <DescriptionList className={styles.headerList} size="small" col="2" style={{fontSize:"16px",font:'C","Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif'}}>
         <Description term="产品名">{application.product}</Description>
         <Description term="创建时间">{application.createTime}</Description>
         <Description term="品牌">{application.brand}</Description>
@@ -178,7 +178,16 @@ class BasicProfile extends Component {
                         cover={<img alt="example" src={item.image}
                                     style={{ height: '180px' }} onClick={() => {
                           this.showPreview(true, {name:item.name,url:item.image})
-                        }}/>}/>
+                        }}/>}>
+                  <Card.Meta
+                    style={{
+                      textAlign:"center",
+                      height:"40px",
+                      lineHeight:"40px"
+                    }}
+                    title={item.name}
+                  />
+                  </Card>
                 </List.Item>
               )}
             />
@@ -194,7 +203,16 @@ class BasicProfile extends Component {
                         cover={<img alt="example" src={item.image}
                                     style={{ height: '180px' }} onClick={() => {
                           this.showPreview(true, {name:item.name,url:item.image})
-                        }}/>}/>
+                        }}/>}>
+                    <Card.Meta
+                      style={{
+                        textAlign:"center",
+                        height:"40px",
+                        lineHeight:"40px"
+                      }}
+                      title={item.name}
+                    />
+                  </Card>
                 </List.Item>
               )}
             />
