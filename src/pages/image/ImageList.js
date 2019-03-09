@@ -1,7 +1,7 @@
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Button, Card, Col, Dropdown, Form, Icon, Input, List, message, Modal, Row, Select } from 'antd';
+import { Button, Card, Col, Dropdown, Form, Icon, Input, List, message, Modal, Row, Select, Tooltip } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './TableList.less';
 import CreateForm from './CreateForm';
@@ -32,6 +32,8 @@ class TableList extends PureComponent {
     batchImportVisible: false,
     selectedRows: [],
     formValues: {},
+    previewVisible: false,
+    previewItem: null,
   };
 
   columns = [
@@ -101,6 +103,17 @@ class TableList extends PureComponent {
   // 详情
   previewItem = id => {
     router.push(`/profile/basic/${id}`);
+  };
+
+  showPreview = (previewVisible, previewItem) => {
+    this.setState({
+      previewVisible,
+    });
+    if(previewItem){
+      this.setState({
+        previewItem,
+      });
+    }
   };
 
   // 添加
@@ -363,16 +376,25 @@ class TableList extends PureComponent {
                     //   height: '180px',
                     //   width: '100%',
                     // }}/></a>}
+                    // cover={<img alt={item.name} src={item.url}
+                    //   // style={{height: '180px',width: '100%',}}
+                    //             style={{ width: '180px', height: '150px' }}
+                    //             onClick={() => {
+                    //               this.props.handleSelectImage ? this.props.handleSelectImage(item) : window.open(item.url);
+                    //             }}/>}
                     cover={<img alt={item.name} src={item.url}
                       // style={{height: '180px',width: '100%',}}
                                 style={{ width: '180px', height: '150px' }}
                                 onClick={() => {
-                                  this.props.handleSelectImage ? this.props.handleSelectImage(item) : window.open(item.url);
+                                  this.props.handleSelectImage ? this.props.handleSelectImage(item) : this.showPreview(true, item);
                                 }}/>}
                   >
                     <Card.Meta
                       style={{}}
-                      title={<span> {item.name}</span>}
+                      title={
+                        <Tooltip title={item.name}>
+                          <span>{item.name}</span>
+                        </Tooltip>}
                     />
                   </Card>
                 </List.Item>
@@ -381,6 +403,9 @@ class TableList extends PureComponent {
             />
           </div>
         </Card>
+        <Modal title={this.state.previewItem==null?"":this.state.previewItem.name} visible={this.state.previewVisible} footer={null} onCancel={() => this.showPreview(false)}>
+          <img alt="example" style={{ width: '100%' }} src={this.state.previewItem==null?"":this.state.previewItem.url}/>
+        </Modal>
         <CreateForm {...parentMethods} modalVisible={modalVisible}/>
         <BatchImport {...parentMethods} modalVisible={this.state.batchImportVisible}/>
 
